@@ -180,7 +180,7 @@ void showVector(BoolVector a)
 int main()
 {
 	setlocale(LC_ALL, "rus");
-	BoolVector f(3);
+	BoolVector f(5);
 	showVector(f);
     return 0;
 }
