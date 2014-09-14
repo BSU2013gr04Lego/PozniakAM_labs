@@ -8,7 +8,7 @@
 // Ctors
 
 BoolVector::BoolVector()
-//	:	body(nullptr)
+	:	body(nullptr)
 {
 	n = DEFAULT_SIZE;
 	n_ones = 0;
@@ -22,7 +22,7 @@ BoolVector::BoolVector()
 
 BoolVector::BoolVector(int n)
 	:	n(n)
-//		,body(nullptr)
+		,body(nullptr)
 {
 	n_ones = 0;
 	body = new bool[n];
@@ -35,7 +35,7 @@ BoolVector::BoolVector(int n)
 
 BoolVector::BoolVector(int n, bool arr[])
 	:	n(n)
-//		,body(nullptr)
+		,body(nullptr)
 {
 	n_ones = 0;
 	body = new bool[n];
@@ -50,7 +50,7 @@ BoolVector::BoolVector(int n, bool arr[])
 // Copy ctor
 
 BoolVector::BoolVector(const BoolVector &obj)
-//	:body(nullptr)
+	:body(nullptr)
 {
 	n = obj.n;
 	body = new bool[n];

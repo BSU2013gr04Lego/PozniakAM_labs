@@ -20,7 +20,7 @@ public:
 		{
 			body[i] = a.body[i];
 		}
-	}
+	};
 	~BoolVector();
 
     BoolVector con(BoolVector a, BoolVector b); // Conjuction
