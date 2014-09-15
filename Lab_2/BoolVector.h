@@ -3,6 +3,9 @@ class BoolVector
     int n;      // Vector's length
     bool *body; // Vector's body
     int n_ones; // Number of ones
+
+    void update();
+
 public:
     BoolVector();
     explicit BoolVector(int n);
@@ -11,10 +14,23 @@ public:
     BoolVector& operator=(const BoolVector a);
     ~BoolVector();
 
-    BoolVector operator+(const BoolVector a);
-    bool operator>(const BoolVector a);
+	BoolVector operator~ ();
+    BoolVector operator& (const BoolVector a);
+    BoolVector operator| (const BoolVector a);
+    BoolVector operator^ (const BoolVector a);
 
-    BoolVector con(const BoolVector *a); // Conjuction
+	bool operator! ();
+    bool operator&&(const BoolVector a);
+    bool operator||(const BoolVector a);
+
+    bool operator==(const BoolVector a);
+    bool operator!=(const BoolVector a);
+    bool operator> (const BoolVector a);
+    bool operator>=(const BoolVector a);
+    bool operator< (const BoolVector a);
+    bool operator<=(const BoolVector a);
+
+    BoolVector con(const BoolVector *a); // Conjunction
     BoolVector dis(const BoolVector *a); // Disjunction
     BoolVector neg();               // Negation
     int numOfOnes () const;
