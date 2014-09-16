@@ -4,16 +4,15 @@ Boolean vectors are represented as boolean dynamic arrays
 **L** - performed from left to right.
 **R** - performed from right to left (leading zeros are ignored).
 **B** - result is BoolVector object
-**S** - length of the resulting object is same as length of shortest operand
 
 class BoolVector:
 	operators:
 		'='  - assignment operator
 
 		'~'  - bitwise negation (**B**)
-		'&'  - bitwise AND (**BSL**)
-		'|'  - bitwise OR (**BSL**)
-		'^'  - bitwise XOR (**BSL**)
+		'&'  - bitwise AND (**BL**)
+		'|'  - bitwise OR (**BL**)
+		'^'  - bitwise XOR (**BL**)
 		'!'  - logical negation
 		'&&' - logical AND
 		'||' - logical OR
@@ -58,21 +57,40 @@ using namespace std;
 //------------------------- GLOBAL FUNCTIONS -------------------
 void showVector(BoolVector a)
 {
-    bool *body = a.getBody();
-    int n = a.getLength();
+    unsigned int *body = a.getBody();
+    int n = a.getBodyLength();
 
     cout << endl << "(";
     for (int i = 0; i < n; i++)
-        if (i != n - 1)
-            if (body[i])
-                cout << "1, ";
+    {
+        int  temp = body[i];
+        bool temp_arr[32];
+        for (int i = 0; i < 32; i++)
+			temp_arr[i] = 0;
+
+        for (int j = 0; temp; j++)   // while (temp)
+        {
+            if (temp % 2)
+                temp_arr[j] = 1;
             else
-                cout << "0, ";
-        else
-            if (body[i])
-                cout << "1";
-            else
+                temp_arr[j] = 0;
+            temp /= 2;
+        }
+
+        for (int j = 31; j >= 0; j--)
+        {
+            if (temp_arr[j])
+			{
+				cout << "1";
+			}
+			else
+			{
                 cout << "0";
+			}
+			if (!(j % 8) && j)
+				cout << " ";
+        }
+	}
     cout << ") : " << a.getLength() << endl;
 }
 
@@ -86,8 +104,8 @@ int main()
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
 	for (int i = 0; i < SIZE_OF_ARRAY; i++)
 	{
-		arr_1[i] = BoolVector(5);
-		arr_2[i] = BoolVector(4);
+		arr_1[i] = BoolVector(1);
+		arr_2[i] = BoolVector(1);
 		arr_3[i] = userFunction(arr_1[i], arr_2[i]);
 		showVector(arr_3[i]);
 	}
