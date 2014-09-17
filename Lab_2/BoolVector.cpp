@@ -25,10 +25,11 @@ BoolVector::BoolVector()
     }
 }
 
-BoolVector::BoolVector(int n)
-    :	n(n),
+BoolVector::BoolVector(int length)
+    :	length(length),
 		body(nullptr)
 {
+	n = length / 32 + length % 32 ? 1 : 0;
     body = new unsigned int[n];
     clearBody();
 	for (int i = 0; i < n; i++)
@@ -45,19 +46,21 @@ BoolVector::BoolVector(int n)
     update();
 }
 
-BoolVector::BoolVector(int n, unsigned int arr[])
-    :	n(n),
+BoolVector::BoolVector(int length, bool arr[])
+    :	length(length),
 		body(nullptr)
 {
-
+	n = length / 32 + length % 32 ? 1 : 0;
     body = new unsigned int[n];
     clearBody();
-    if (body)
+
+    for (int i = 0, curr = 0; i < length; i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            body[i] = arr[i];
-        }
+    	if (i == (curr + 1) * 32)
+			curr++;
+    	int bit = arr[length - i - 1] ? 1 : 0;
+    	bit <<= i;
+    	body[curr] |= bit;
     }
     update();
 }

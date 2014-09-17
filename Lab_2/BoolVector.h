@@ -11,8 +11,8 @@ class BoolVector
 
 public:
     BoolVector();
-    explicit BoolVector(int n);
-    BoolVector(int n, unsigned int arr[]);
+    explicit BoolVector(int length);
+    BoolVector(int length, bool arr[]);
     BoolVector(const BoolVector &obj);
     BoolVector& operator=(const BoolVector a);
     ~BoolVector();
@@ -42,6 +42,4 @@ public:
     unsigned int* getBody() const;
     int getLength() const;
     int getBodyLength() const;
-
-    friend void showVector(BoolVector a);
 };

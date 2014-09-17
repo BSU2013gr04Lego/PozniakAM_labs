@@ -109,13 +109,17 @@ BoolVector userFunction(BoolVector a, BoolVector b)
 
 int main()
 {
-	unsigned int init_1[2] = {3405677, 131344};
-	unsigned int init_2[2] = {3450611, 9992};
-	unsigned int init_3[2] = {0, 0};
+	bool init_1[4] = {1, 1, 1, 1};
+	bool init_2[2] = {0, 1};
+	bool init_3[3] = {1, 0, 0};
 
-	BoolVector a(2, init_1);
+	BoolVector a(4, init_1);
 	BoolVector b(2, init_2);
-	BoolVector c(2, init_3);
+	BoolVector c(3, init_3);
+
+	showVector(a);
+	showVector(b);
+	showVector(c);
 
 	//  operator test
 	/*  NOT
