@@ -175,7 +175,6 @@ BoolVector BoolVector::operator~()
 		ans.body[i] = ~ this->body[i];
 	}
 	ans.update();
-	showVector(ans);
 	if ((*this).length % 32)
 	{
 		unsigned int bit_mask = 0;
@@ -188,7 +187,6 @@ BoolVector BoolVector::operator~()
 		ans.body[this->n - ((*this).length / 32 + 1)] &= ~ bit_mask;
 	}
 	ans.update();
-	showVector(ans);
 	return ans;
 }
 
@@ -322,14 +320,16 @@ bool BoolVector::operator||(const BoolVector a)
 
 bool BoolVector::operator==(const BoolVector a)
 {
-	for (int i = max(this->n, a.n); i > 0; i--)
-	{
-		unsigned int x = this->n >= i ? this->body[i] : 0;
-		unsigned int y = a.n >= i ? a.body[i] : 0;
-		if (x != y)
-			return false;
-	}
-	return true;
+    if ((*this).n == a.n)
+    {
+        for (int i = 0; i < a.n; i++)
+        {
+            if (this->body[i] != a.body[i])
+                return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 bool BoolVector::operator!=(const BoolVector a)
@@ -341,16 +341,20 @@ bool BoolVector::operator!=(const BoolVector a)
 
 bool BoolVector::operator>(const BoolVector a)
 {
-	for (int i = max(this->n, a.n); i > 0; i--)
-	{
-		unsigned int x = this->n >= i ? this->body[i] : 0;
-		unsigned int y = a.n >= i ? a.body[i] : 0;
-		if (x > y)
-			return true;
-		if (y > x)
-			return false;
-	}
-	return false;
+    if ((*this).n == a.n)
+    {
+        for (int i = 0; i < a.n; i++)
+        {
+            if (this->body[i] > a.body[i])
+                return true;
+			else
+				if (this->body[i] < a.body[i])
+					return false;
+        }
+    }
+    if ((*this).n > a.n)
+		return true;
+    return false;
 }
 
 bool BoolVector::operator>=(const BoolVector a)
@@ -406,7 +410,7 @@ int BoolVector::numOfOnes() const
 
 int BoolVector::numOfZeros() const
 {
-    return n - n_ones;
+    return length - n_ones;
 }
 
 //------------------------- SET/GET METHODS --------------------

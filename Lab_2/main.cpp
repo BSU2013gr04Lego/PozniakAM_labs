@@ -60,13 +60,12 @@ void showVector(BoolVector a)
     unsigned int *body = a.getBody();
     int n = a.getBodyLength();
 
-    cout << endl << n << " | " << a.getLength() << " | " << a.numOfOnes() << endl;
+    cout << endl << n << " | " << a.getLength() << " | " << a.numOfOnes();
 
     //body show
     cout << endl << "Body: ";
     for (int i = 0; i < n; i++)
 		cout << body[i] << " ";
-	cout << endl;
 
 	// Binary body show
     cout << endl << "(";
@@ -112,13 +111,61 @@ int main()
 {
 	unsigned int init_1[2] = {3405677, 131344};
 	unsigned int init_2[2] = {3450611, 9992};
+	unsigned int init_3[2] = {0, 0};
 
 	BoolVector a(2, init_1);
 	BoolVector b(2, init_2);
+	BoolVector c(2, init_3);
 
+	//  operator test
+	/*  NOT
+	cout << "-------- NOT --------------------" << endl;
 	showVector(a);
 	a = ~ a;
 	showVector(a);
+	*/
+	/*  AND
+	cout << "-------- AND --------------------" << endl;
+	showVector(a);
+	showVector(b);
+	a = a & b;
+	showVector(a);
+	*/
+	/*  OR
+	cout << "-------- OR ---------------------" << endl;
+	showVector(a);
+	showVector(b);
+	a = a | b;
+	showVector(a);
+	*/
+	/*  XOR
+	cout << "-------- XOR --------------------" << endl;
+	showVector(a);
+	showVector(b);
+	a = a ^ b;
+	showVector(a);
+	*/
+
+	// logical test
+	/* logical test
+    cout << !a << " " << !c << endl; // false true
+
+    cout << (a && b) << " " << (a && c) << " "
+		 << (c && b) << " " << (c && c) << endl; // true false false false
+
+	cout << (a || b) << " " << (a || c) << " "
+		 << (c || b) << " " << (c || c) << endl; // true true true false
+
+	cout << (a == a) << " " << (a == b) << " " << (a == c) << " " << (c == c) << endl; // true false false true
+	cout << (a != a) << " " << (a != b) << " " << (a != c) << " " << (c != c) << endl; // false true true false
+
+	cout << (a > c) << " " << (a > a) << " " << (c > a) << endl; // true false false
+	cout << (a >= c) << " " << (a >= a) << " " << (c >= a) << endl; // true true false
+	cout << (a < c) << " " << (a < a) << " " << (c < a) << endl; // false false true
+	cout << (a <= c) << " " << (a <= a) << " " << (c <= a) << endl; // false true true
+	*/
+
+
 
 	/*
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
