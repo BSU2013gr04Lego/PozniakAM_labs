@@ -112,18 +112,30 @@ BoolVector::~BoolVector()
 
 void BoolVector::update()
 {
-	int ans = 0;
+	int ans = 0; int l = 0; int len = 0;
 	for (int i = 0; i < n; i++)
 		if (body[i])
 			ans += nBinaryOnes(body[i]);
 	(*this).n_ones = ans;
-	(*this).length = (*this).n * 32;
+	for (int i = 0; i < n; i++)
+	{
+		unsigned int temp = body[i];
+		for (int j = 0; temp; j++)
+		{
+			if (temp % 2)
+				l = j;
+			temp /= 2;
+		}
+		len += l;
+		l = 0;
+	}
+	(*this).length = len + 1;
 }
 
-int BoolVector::nBinaryOnes(const int x)
+int BoolVector::nBinaryOnes(const unsigned int x)
 {
 	int ans = 0;
-	int temp = x;
+	unsigned int temp = x;
 	while (temp)
 	{
 		ans += temp % 2;
@@ -147,11 +159,13 @@ void BoolVector::clearBody()
 BoolVector BoolVector::operator~()
 {
 	BoolVector ans(this->n);
+	showVector(ans);
 	for (int i = 0; i < this->n; i++)
 	{
 		ans.body[i] = ~ this->body[i];
 	}
 	ans.update();
+	showVector(ans);
 	return ans;
 }
 

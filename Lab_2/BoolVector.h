@@ -6,7 +6,7 @@ class BoolVector
     int n_ones; 			// Number of ones
 
     void update();
-    int nBinaryOnes(const int x);
+    int nBinaryOnes(const unsigned int x);
     void clearBody();
 
 public:
@@ -42,4 +42,6 @@ public:
     unsigned int* getBody() const;
     int getLength() const;
     int getBodyLength() const;
+
+    friend void showVector(BoolVector a);
 };

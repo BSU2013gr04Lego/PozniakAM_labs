@@ -60,10 +60,19 @@ void showVector(BoolVector a)
     unsigned int *body = a.getBody();
     int n = a.getBodyLength();
 
+    cout << endl << n << " | " << a.getLength() << " | " << a.numOfOnes() << endl;
+
+    //body show
+    cout << endl << "Body: ";
+    for (int i = 0; i < n; i++)
+		cout << body[i] << " ";
+	cout << endl;
+
+	// Binary body show
     cout << endl << "(";
     for (int i = 0; i < n; i++)
     {
-        int  temp = body[i];
+        unsigned int  temp = body[i];
         bool temp_arr[32];
         for (int i = 0; i < 32; i++)
 			temp_arr[i] = 0;
@@ -101,13 +110,21 @@ BoolVector userFunction(BoolVector a, BoolVector b)
 
 int main()
 {
+	unsigned int init_1[1] = {3405677};
+	unsigned int init_2[1] = {3450611};
+
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
 	for (int i = 0; i < SIZE_OF_ARRAY; i++)
 	{
-		arr_1[i] = BoolVector(1);
-		arr_2[i] = BoolVector(1);
+		arr_1[i] = BoolVector(1, init_1);
+		arr_2[i] = BoolVector(1, init_2);
 		arr_3[i] = userFunction(arr_1[i], arr_2[i]);
-		showVector(arr_3[i]);
 	}
+
+	showVector(arr_1[0]);
+	showVector(arr_2[0]);
+	showVector(~ arr_2[0]);
+	showVector(arr_3[0]);
+
     return 0;
 }
