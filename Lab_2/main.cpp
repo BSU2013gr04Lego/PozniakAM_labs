@@ -96,7 +96,7 @@ void showVector(BoolVector a)
 			{
                 cout << "0";
 			}
-			if (!(j % 8) && j)
+			if (!(j % 8))
 				cout << " ";
         }
 	}
@@ -110,21 +110,30 @@ BoolVector userFunction(BoolVector a, BoolVector b)
 
 int main()
 {
-	unsigned int init_1[1] = {3405677};
-	unsigned int init_2[1] = {3450611};
+	unsigned int init_1[2] = {3405677, 131344};
+	unsigned int init_2[2] = {3450611, 9992};
 
+	BoolVector a(2, init_1);
+	BoolVector b(2, init_2);
+
+	showVector(a);
+	a = ~ a;
+	showVector(a);
+
+	/*
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
 	for (int i = 0; i < SIZE_OF_ARRAY; i++)
 	{
-		arr_1[i] = BoolVector(1, init_1);
-		arr_2[i] = BoolVector(1, init_2);
+		arr_1[i] = BoolVector(2, init_1);
+		arr_2[i] = BoolVector(2, init_2);
 		arr_3[i] = userFunction(arr_1[i], arr_2[i]);
 	}
+	*/
 
-	showVector(arr_1[0]);
-	showVector(arr_2[0]);
-	showVector(~ arr_2[0]);
-	showVector(arr_3[0]);
+	//showVector(arr_1[0]);
+	//showVector(arr_2[0]);
+	//showVector(~ arr_2[0]);
+	//showVector(arr_3[0]);
 
     return 0;
 }
