@@ -11,28 +11,30 @@ public:
     explicit BoolVector(int n);
     BoolVector(int n, bool arr[]);
     BoolVector(const BoolVector &obj);
+    BoolVector(BoolVector &&obj);
     BoolVector& operator=(const BoolVector a);
+    //BoolVector& operator=(BoolVector &&a);
     ~BoolVector();
 
-	BoolVector operator~ ();
-    BoolVector operator& (const BoolVector a);
-    BoolVector operator| (const BoolVector a);
-    BoolVector operator^ (const BoolVector a);
+	BoolVector operator~ () const;
+    BoolVector operator& (const BoolVector a) const;
+    BoolVector operator| (const BoolVector a) const;
+    BoolVector operator^ (const BoolVector a) const;
 
-	bool operator! ();
-    bool operator&&(const BoolVector a);
-    bool operator||(const BoolVector a);
+	bool operator! () const;
+    bool operator&&(const BoolVector a) const;
+    bool operator||(const BoolVector a) const;
 
-    bool operator==(const BoolVector a);
-    bool operator!=(const BoolVector a);
-    bool operator> (const BoolVector a);
-    bool operator>=(const BoolVector a);
-    bool operator< (const BoolVector a);
-    bool operator<=(const BoolVector a);
+    bool operator==(const BoolVector a) const;
+    bool operator!=(const BoolVector a) const;
+    bool operator> (const BoolVector a) const;
+    bool operator>=(const BoolVector a) const;
+    bool operator< (const BoolVector a) const;
+    bool operator<=(const BoolVector a) const;
 
-    BoolVector con(const BoolVector *a); // Conjunction
-    BoolVector dis(const BoolVector *a); // Disjunction
-    BoolVector neg();               // Negation
+    BoolVector con(const BoolVector a) const; // Conjunction
+    BoolVector dis(const BoolVector a) const; // Disjunction
+    BoolVector neg() const;               // Negation
     int numOfOnes () const;
     int numOfZeros () const;
 
