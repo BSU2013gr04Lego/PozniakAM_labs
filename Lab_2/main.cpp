@@ -121,33 +121,29 @@ int main()
 	showVector(b);
 	showVector(c);
 
-	//  operator test
-	/*  NOT
+	/*  operator test
+	//  NOT
 	cout << "-------- NOT --------------------" << endl;
 	showVector(a);
-	a = ~ a;
-	showVector(a);
-	*/
-	/*  AND
+	showVector(~ a);
+
+	//  AND
 	cout << "-------- AND --------------------" << endl;
 	showVector(a);
 	showVector(b);
-	a = a & b;
-	showVector(a);
-	*/
-	/*  OR
+	showVector(a & b);
+
+	//  OR
 	cout << "-------- OR ---------------------" << endl;
 	showVector(a);
 	showVector(b);
-	a = a | b;
-	showVector(a);
-	*/
-	/*  XOR
+	showVector(a | b);
+
+	//  XOR
 	cout << "-------- XOR --------------------" << endl;
 	showVector(a);
 	showVector(b);
-	a = a ^ b;
-	showVector(a);
+	showVector(a ^ b);
 	*/
 
 	// logical test
