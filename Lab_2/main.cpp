@@ -57,7 +57,7 @@ using namespace std;
 //------------------------- GLOBAL FUNCTIONS -------------------
 void showVector(BoolVector a)
 {
-    unsigned int *body = a.getBody();
+    const unsigned int *body = a.getBody();
     int n = a.getBodyLength();
 
     cout << endl << n << " | " << a.getLength() << " | " << a.numOfOnes();
@@ -65,16 +65,16 @@ void showVector(BoolVector a)
     //body show
     cout << endl << "Body: ";
     for (int i = 0; i < n; i++)
-		cout << body[i] << " ";
+        cout << body[i] << " ";
 
-	// Binary body show
+    // Binary body show
     cout << endl << "(";
     for (int i = 0; i < n; i++)
     {
         unsigned int  temp = body[i];
         bool temp_arr[32];
         for (int i = 0; i < 32; i++)
-			temp_arr[i] = 0;
+            temp_arr[i] = 0;
 
         for (int j = 0; temp; j++)   // while (temp)
         {
@@ -88,99 +88,99 @@ void showVector(BoolVector a)
         for (int j = 31; j >= 0; j--)
         {
             if (temp_arr[j])
-			{
-				cout << "1";
-			}
-			else
-			{
+            {
+                cout << "1";
+            }
+            else
+            {
                 cout << "0";
-			}
-			if (!(j % 8))
-				cout << " ";
+            }
+            if (!(j % 8))
+                cout << " ";
         }
-	}
+    }
     cout << ") : " << a.getLength() << endl;
 }
 
 BoolVector userFunction(BoolVector a, BoolVector b)
 {
-	return BoolVector(a | (~b));
+    return BoolVector(a | (~b));
 }
 
 int main()
 {
-	bool init_1[4] = {1, 1, 1, 1};
-	bool init_2[2] = {0, 1};
-	bool init_3[3] = {1, 0, 0};
+    bool init_1[4] = {1, 1, 1, 1};
+    bool init_2[2] = {0, 1};
+    bool init_3[3] = {1, 0, 0};
 
-	BoolVector a(4, init_1);
-	BoolVector b(2, init_2);
-	BoolVector c(3, init_3);
+    BoolVector a(4, init_1);
+    BoolVector b(2, init_2);
+    BoolVector c(3, init_3);
 
-	showVector(a);
-	showVector(b);
-	showVector(c);
+    showVector(a);
+    showVector(b);
+    showVector(c);
 
-	/*  operator test
-	//  NOT
-	cout << "-------- NOT --------------------" << endl;
-	showVector(a);
-	showVector(~ a);
+    /*  operator test
+    //  NOT
+    cout << "-------- NOT --------------------" << endl;
+    showVector(a);
+    showVector(~ a);
 
-	//  AND
-	cout << "-------- AND --------------------" << endl;
-	showVector(a);
-	showVector(b);
-	showVector(a & b);
+    //  AND
+    cout << "-------- AND --------------------" << endl;
+    showVector(a);
+    showVector(b);
+    showVector(a & b);
 
-	//  OR
-	cout << "-------- OR ---------------------" << endl;
-	showVector(a);
-	showVector(b);
-	showVector(a | b);
+    //  OR
+    cout << "-------- OR ---------------------" << endl;
+    showVector(a);
+    showVector(b);
+    showVector(a | b);
 
-	//  XOR
-	cout << "-------- XOR --------------------" << endl;
-	showVector(a);
-	showVector(b);
-	showVector(a ^ b);
-	*/
+    //  XOR
+    cout << "-------- XOR --------------------" << endl;
+    showVector(a);
+    showVector(b);
+    showVector(a ^ b);
+    */
 
-	// logical test
-	/* logical test
+    // logical test
+    /* logical test
     cout << !a << " " << !c << endl; // false true
 
     cout << (a && b) << " " << (a && c) << " "
-		 << (c && b) << " " << (c && c) << endl; // true false false false
+    	 << (c && b) << " " << (c && c) << endl; // true false false false
 
-	cout << (a || b) << " " << (a || c) << " "
-		 << (c || b) << " " << (c || c) << endl; // true true true false
+    cout << (a || b) << " " << (a || c) << " "
+    	 << (c || b) << " " << (c || c) << endl; // true true true false
 
-	cout << (a == a) << " " << (a == b) << " " << (a == c) << " " << (c == c) << endl; // true false false true
-	cout << (a != a) << " " << (a != b) << " " << (a != c) << " " << (c != c) << endl; // false true true false
+    cout << (a == a) << " " << (a == b) << " " << (a == c) << " " << (c == c) << endl; // true false false true
+    cout << (a != a) << " " << (a != b) << " " << (a != c) << " " << (c != c) << endl; // false true true false
 
-	cout << (a > c) << " " << (a > a) << " " << (c > a) << endl; // true false false
-	cout << (a >= c) << " " << (a >= a) << " " << (c >= a) << endl; // true true false
-	cout << (a < c) << " " << (a < a) << " " << (c < a) << endl; // false false true
-	cout << (a <= c) << " " << (a <= a) << " " << (c <= a) << endl; // false true true
-	*/
+    cout << (a > c) << " " << (a > a) << " " << (c > a) << endl; // true false false
+    cout << (a >= c) << " " << (a >= a) << " " << (c >= a) << endl; // true true false
+    cout << (a < c) << " " << (a < a) << " " << (c < a) << endl; // false false true
+    cout << (a <= c) << " " << (a <= a) << " " << (c <= a) << endl; // false true true
+    */
 
 
 
-	/*
+    /*
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
-	for (int i = 0; i < SIZE_OF_ARRAY; i++)
-	{
-		arr_1[i] = BoolVector(2, init_1);
-		arr_2[i] = BoolVector(2, init_2);
-		arr_3[i] = userFunction(arr_1[i], arr_2[i]);
-	}
-	*/
+    for (int i = 0; i < SIZE_OF_ARRAY; i++)
+    {
+    	arr_1[i] = BoolVector(2, init_1);
+    	arr_2[i] = BoolVector(2, init_2);
+    	arr_3[i] = userFunction(arr_1[i], arr_2[i]);
+    }
+    */
 
-	//showVector(arr_1[0]);
-	//showVector(arr_2[0]);
-	//showVector(~ arr_2[0]);
-	//showVector(arr_3[0]);
+    //showVector(arr_1[0]);
+    //showVector(arr_2[0]);
+    //showVector(~ arr_2[0]);
+    //showVector(arr_3[0]);
 
     return 0;
 }

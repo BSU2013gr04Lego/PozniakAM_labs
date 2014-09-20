@@ -15,16 +15,16 @@ public:
     BoolVector(int length, bool arr[]);
     BoolVector(const BoolVector &obj);
     BoolVector(BoolVector &&obj);
-    BoolVector& operator=(const BoolVector a);
-    //BoolVector& operator=(BoolVector &&a);
+    BoolVector& operator=(const BoolVector &a);
+    BoolVector& operator=(BoolVector &&a);
     ~BoolVector();
 
-	BoolVector operator~ () const;
+    BoolVector operator~ () const;
     BoolVector operator& (const BoolVector a) const;
     BoolVector operator| (const BoolVector a) const;
     BoolVector operator^ (const BoolVector a) const;
 
-	bool operator! () const;
+    bool operator! () const;
     bool operator&&(const BoolVector a) const;
     bool operator||(const BoolVector a) const;
 
@@ -41,7 +41,7 @@ public:
     int numOfOnes () const;
     int numOfZeros () const;
 
-    unsigned int* getBody() const;
+    const unsigned int* getBody() const;
     int getLength() const;
     int getBodyLength() const;
 };
