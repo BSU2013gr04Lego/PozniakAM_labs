@@ -1,4 +1,5 @@
 #include <utility>
+#include <exception>
 
 #include "BoolVector.h"
 
@@ -117,18 +118,18 @@ BoolVector& BoolVector::operator=(const BoolVector &a)
     return *this;
 };
 
-// move assign operator 
+// move assign operator
 
 BoolVector& BoolVector::operator=(BoolVector &&a)
 {
-	if (&a != this)
-	{
-		length = std::move(a.length);
-		n = std::move(a.n);
-		body = std::move(a.body);
-		n_ones = std::move(a.n_ones);
-	}
-	return *this;
+    if (&a != this)
+    {
+        length = std::move(a.length);
+        n = std::move(a.n);
+        body = std::move(a.body);
+        n_ones = std::move(a.n_ones);
+    }
+    return *this;
 }
 
 //destructor
@@ -151,7 +152,7 @@ void BoolVector::update()
             ans += nBinaryOnes(body[i]);
         }
     (*this).n_ones = ans;
-
+    /*
     int last_part = -1;
     for (int i = 0; i < n; i++)
         if (body[i])
@@ -172,6 +173,7 @@ void BoolVector::update()
         (*this).length = 32 * (n - last_part - 1) + len + 1 ;
     else
         (*this).length = 0;
+    */
 }
 
 int BoolVector::nBinaryOnes(const unsigned int x) const
@@ -353,6 +355,20 @@ bool BoolVector::operator||(const BoolVector a) const
         return false;
     return true;
 }
+
+// Array subscript operator
+
+bool BoolVector::operator[](int index) const
+{
+    if (index <= length && index > 0)
+    {
+        return body[(length - index) / 32] & (1 << ((index - 1) % 32));
+    } else
+    {
+        throw std::exception();
+    }
+}
+
 // Comparison operators
 
 bool BoolVector::operator==(const BoolVector a) const
@@ -450,11 +466,6 @@ int BoolVector::numOfZeros() const
 }
 
 //------------------------- SET/GET METHODS --------------------
-const unsigned int* BoolVector::getBody() const
-{
-    return body;
-}
-
 int BoolVector::getLength() const
 {
     return length;

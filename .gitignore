@@ -6,3 +6,4 @@ obj/
 *.depend
 *.[oa]
 *.cbp
+*.save

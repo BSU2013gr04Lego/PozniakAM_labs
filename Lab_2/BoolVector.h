@@ -24,6 +24,8 @@ public:
     BoolVector operator| (const BoolVector a) const;
     BoolVector operator^ (const BoolVector a) const;
 
+    bool operator[](int index) const;
+
     bool operator! () const;
     bool operator&&(const BoolVector a) const;
     bool operator||(const BoolVector a) const;
@@ -41,7 +43,6 @@ public:
     int numOfOnes () const;
     int numOfZeros () const;
 
-    const unsigned int* getBody() const;
     int getLength() const;
     int getBodyLength() const;
 };

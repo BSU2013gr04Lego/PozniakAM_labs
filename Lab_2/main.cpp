@@ -45,7 +45,6 @@ class BoolVector:
 */
 
 #include <iostream>
-#include <conio.h>
 #include <math.h>
 
 #include "BoolVector.h"
@@ -57,19 +56,11 @@ using namespace std;
 //------------------------- GLOBAL FUNCTIONS -------------------
 void showVector(BoolVector a)
 {
-    const unsigned int *body = a.getBody();
-    int n = a.getBodyLength();
-
-    cout << endl << n << " | " << a.getLength() << " | " << a.numOfOnes();
-
-    //body show
-    cout << endl << "Body: ";
-    for (int i = 0; i < n; i++)
-        cout << body[i] << " ";
+    cout << endl << a.getBodyLength() << " | " << a.getLength() << " | " << a.numOfOnes();
 
     // Binary body show
     cout << endl << "(";
-    for (int i = 0; i < n; i++)
+    /*for (int i = 0; i < n; i++)
     {
         unsigned int  temp = body[i];
         bool temp_arr[32];
@@ -98,6 +89,12 @@ void showVector(BoolVector a)
             if (!(j % 8))
                 cout << " ";
         }
+    }*/
+    for (int i = a.getLength(); i > 0; --i)
+    {
+        cout << a[i];
+        if (!(i % 8))
+            cout << " ";
     }
     cout << ") : " << a.getLength() << endl;
 }
