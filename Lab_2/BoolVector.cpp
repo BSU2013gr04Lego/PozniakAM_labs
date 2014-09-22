@@ -1,4 +1,5 @@
 #include <utility>
+#include <exception>
 
 #include "BoolVector.h"
 
@@ -131,6 +132,13 @@ void BoolVector::update()
 }
 
 //------------------------- OPERATORS --------------------------
+
+bool BoolVector::operator[](const int index) const
+{
+    if (index >=0 && index < n)
+        return body[index];
+    throw std::exception();
+}
 
 // Bitwise operators
 
@@ -318,10 +326,6 @@ int BoolVector::numOfZeros() const
 }
 
 //------------------------- SET/GET METHODS --------------------
-bool* BoolVector::getBody() const
-{
-    return body;
-}
 
 int BoolVector::getLength() const
 {

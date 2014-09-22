@@ -46,7 +46,6 @@ class BoolVector:
 */
 
 #include <iostream>
-#include <conio.h>
 #include <math.h>
 
 #include "BoolVector.h"
@@ -58,21 +57,11 @@ using namespace std;
 //------------------------- GLOBAL FUNCTIONS -------------------
 void showVector(BoolVector a)
 {
-    bool *body = a.getBody();
     int n = a.getLength();
 
     cout << endl << "(";
     for (int i = 0; i < n; i++)
-        if (i != n - 1)
-            if (body[i])
-                cout << "1, ";
-            else
-                cout << "0, ";
-        else
-            if (body[i])
-                cout << "1";
-            else
-                cout << "0";
+        cout << a[i];
     cout << ") : " << a.getLength() << endl;
 }
 
