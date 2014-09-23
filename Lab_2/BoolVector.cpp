@@ -85,7 +85,7 @@ BoolVector::BoolVector(BoolVector &&obj)
 
 //assign op
 
-BoolVector& BoolVector::operator=(const BoolVector a)
+BoolVector& BoolVector::operator=(const BoolVector &a)
 {
     if (&a == this)
         return *this;
@@ -101,7 +101,7 @@ BoolVector& BoolVector::operator=(const BoolVector a)
 };
 
 //move assignment
-/*
+
 BoolVector& BoolVector::operator=(BoolVector &&a)
 {
 	if (this != &a)
@@ -112,7 +112,7 @@ BoolVector& BoolVector::operator=(BoolVector &&a)
 	}
 	return *this;
 }
-*/
+
 //destructor
 
 BoolVector::~BoolVector()

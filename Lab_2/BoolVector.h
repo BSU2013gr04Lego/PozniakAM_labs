@@ -12,8 +12,8 @@ public:
     BoolVector(int n, bool arr[]);
     BoolVector(const BoolVector &obj);
     BoolVector(BoolVector &&obj);
-    BoolVector& operator=(const BoolVector a);
-    //BoolVector& operator=(BoolVector &&a);
+    BoolVector& operator=(const BoolVector &a);
+    BoolVector& operator=(BoolVector &&a);
     ~BoolVector();
 
     bool operator[](const int i) const;
