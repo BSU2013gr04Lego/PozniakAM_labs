@@ -72,10 +72,6 @@ BoolVector userFunction(BoolVector a, BoolVector b)
 
 int main()
 {
-    BoolVector a(3), b(4), c(5);
-
-    a = b | (~ c);
-    /*
     BoolVector arr_1[SIZE_OF_ARRAY], arr_2[SIZE_OF_ARRAY], arr_3[SIZE_OF_ARRAY];
 	for (int i = 0; i < SIZE_OF_ARRAY; i++)
 	{
@@ -84,7 +80,5 @@ int main()
 		arr_3[i] = userFunction(arr_1[i], arr_2[i]);
 		showVector(arr_3[i]);
 	}
-	*/
-	showVector(a);
     return 0;
 }
