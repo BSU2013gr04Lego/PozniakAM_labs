@@ -1,3 +1,6 @@
+#ifndef BOOLVECTOR_H
+#define BOOLVECTOR_H
+
 class BoolVector
 {
     int length;      		// Vector's length
@@ -46,3 +49,5 @@ public:
     int getLength() const;
     int getBodyLength() const;
 };
+
+#endif // BOOLVECTOR_H
