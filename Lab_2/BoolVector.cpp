@@ -106,9 +106,9 @@ BoolVector& BoolVector::operator=(BoolVector &&a)
 {
 	if (this != &a)
 	{
-		n = std::move(a.n);
-		body = std::move(a.body);
-		n_ones = std::move(a.n_ones);
+		std::swap(this->n, a.n);
+		std::swap(this->body, a.body);
+		std::swap(this->n_ones, a.n_ones);
 	}
 	return *this;
 }
