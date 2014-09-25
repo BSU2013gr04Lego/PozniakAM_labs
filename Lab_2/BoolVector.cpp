@@ -7,16 +7,19 @@
 
 #define max(a, b)((a > b) ? (a) : (b))
 #define min(a, b)((a < b) ? (a) : (b))
-//---------------------- GREAT 4 ------------------------------
+
+//---------------------- GREAT 6 ------------------------------
 
 // Constructors
 
 BoolVector::BoolVector()
-    :	body(nullptr)
+    :body(nullptr)
 {
-    n = DEFAULT_SIZE;
+    length = DEFAULT_SIZE;
+    n = (length / 32) + (length % 32 ? 1 : 0);
     n_ones = 0;
-    body = new bool[n];
+    body = new unsigned int[n];
+    clearBody();
     if (body)
     {
         for (int i = 0; i < n; i++)
@@ -26,12 +29,17 @@ BoolVector::BoolVector()
     }
 }
 
-BoolVector::BoolVector(int n)
-    :	n(n)
-    ,body(nullptr)
+BoolVector::BoolVector(int length)
+    :length(length),
+     body(nullptr)
 {
-    n_ones = 0;
-    body = new bool[n];
+    n = length / 32 + length % 32 ? 1 : 0;
+    body = new unsigned int[n];
+    clearBody();
+    for (int i = 0; i < n; i++)
+    {
+        body[i] = 0;
+    }
     if (body)
     {
         for (int i = 0; i < n; i++)
@@ -39,22 +47,26 @@ BoolVector::BoolVector(int n)
             body[i] = 0;
         }
     }
+    update();
 }
 
-BoolVector::BoolVector(int n, bool arr[])
-    :	n(n)
-    ,body(nullptr)
+BoolVector::BoolVector(int length, bool arr[])
+    :length(length),
+     body(nullptr)
 {
-    n_ones = 0;
-    body = new bool[n];
-    if (body)
+    n = length / 32 + length % 32 ? 1 : 0;
+    body = new unsigned int[n];
+    clearBody();
+
+    for (int i = 0, curr = 0; i < length; i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            body[i] = arr[i];
-            n_ones  += arr[i];
-        }
+        if (i == (curr + 1) * 32)
+            curr++;
+        int bit = arr[length - i - 1] ? 1 : 0;
+        bit <<= i;
+        body[curr] |= bit;
     }
+    update();
 }
 
 // Copy constructor
@@ -62,9 +74,11 @@ BoolVector::BoolVector(int n, bool arr[])
 BoolVector::BoolVector(const BoolVector &obj)
     :body(nullptr)
 {
+    length = obj.length;
     n = obj.n;
     n_ones = obj.n_ones;
-    body = new bool[n];
+    body = new unsigned int[n];
+    clearBody();
     if (body)
     {
         for (int i = 0; i < n; i++)
@@ -74,12 +88,13 @@ BoolVector::BoolVector(const BoolVector &obj)
     }
 }
 
-//move constructor
+// move constructor
 
 BoolVector::BoolVector(BoolVector &&obj)
-	:n(std::move(obj.n)),
-	 body(std::move(obj.body)),
-	 n_ones(std::move(obj.n_ones))
+    :length(std::move(obj.length)),
+     n(std::move(obj.n)),
+     body(std::move(obj.body)),
+     n_ones(std::move(obj.n_ones))
 {
 }
 
@@ -91,26 +106,30 @@ BoolVector& BoolVector::operator=(const BoolVector &a)
         return *this;
     if (body)
         delete[] body;
+    length = a.length;
     n = a.n;
     n_ones = a.n_ones;
-    body = new bool[n];
+    body = new unsigned int[n];
+    clearBody();
     for (int i = 0; i < n; i++)
     {
         body[i] = a.body[i];
     }
+    return *this;
 };
 
-//move assignment
+// move assign operator
 
 BoolVector& BoolVector::operator=(BoolVector &&a)
 {
-	if (this != &a)
-	{
-		std::swap(this->n, a.n);
-		std::swap(this->body, a.body);
-		std::swap(this->n_ones, a.n_ones);
-	}
-	return *this;
+    if (&a != this)
+    {
+        std::swap(this->length, a.length);
+        std::swap(this->n, a.n);
+        std::swap(this->body, a.body);
+        std::swap(this->n_ones, a.n_ones);
+    }
+    return *this;
 }
 
 //destructor
@@ -124,11 +143,57 @@ BoolVector::~BoolVector()
 
 void BoolVector::update()
 {
-	int ans = 0;
-	for (int i = 0; i < n; i++)
-		if (body[i])
-			ans++;
-	n_ones = ans;
+    int ans = 0;
+    int len = 0;
+
+    for (int i = 0; i < n; i++)
+        if (body[i])
+        {
+            ans += nBinaryOnes(body[i]);
+        }
+    (*this).n_ones = ans;
+    /*
+    int last_part = -1;
+    for (int i = 0; i < n; i++)
+        if (body[i])
+        {
+            last_part = i;
+            break;
+        }
+
+
+    unsigned int temp = body[last_part];
+    for (int j = 0; temp; j++)
+    {
+        if (temp % 2)
+            len = j;
+        temp /= 2;
+    }
+    if (~ last_part)
+        (*this).length = 32 * (n - last_part - 1) + len + 1 ;
+    else
+        (*this).length = 0;
+    */
+}
+
+int BoolVector::nBinaryOnes(const unsigned int x) const
+{
+    int ans = 0;
+    unsigned int temp = x;
+    while (temp)
+    {
+        ans += temp % 2;
+        temp /= 2;
+    }
+    return ans;
+}
+
+void BoolVector::clearBody()
+{
+    for (int i = 0; i < (*this).n; i++)
+    {
+        body[i] = 0;
+    }
 }
 
 //------------------------- OPERATORS --------------------------
@@ -144,21 +209,43 @@ bool BoolVector::operator[](const int index) const
 
 BoolVector BoolVector::operator~() const
 {
-	BoolVector ans(this->n);
-	for (int i = 0; i < this->n; i++)
-	{
-		ans.body[i] = ! this->body[i];
-	}
-	ans.update();
-	return ans;
+    BoolVector ans(this->n);
+    for (int i = 0; i < this->n; i++)
+    {
+        ans.body[i] = ~ this->body[i];
+    }
+    ans.update();
+    if ((*this).length % 32)
+    {
+        unsigned int bit_mask = 0;
+        for (int i = 0; i < 32 - ((*this).length % 32); i++)
+        {
+            bit_mask <<= 1;
+            bit_mask++;
+        }
+        bit_mask <<= ((*this).length % 32);
+        ans.body[this->n - ((*this).length / 32 + 1)] &= ~ bit_mask;
+    }
+    ans.update();
+    return ans;
 }
 
 BoolVector BoolVector::operator&(const BoolVector a) const
 {
-	BoolVector ans(min(this->n, a.n));
-    for (int i = 0; i < min(this->n, a.n); i++)
+    BoolVector ans(max(this->n, a.n));
+    for (int i = this->n, j = a.n, k = max(this->n, a.n); i >= 0 || j >= 0; k--)
     {
-        ans.body[i] = this->body[i] && a.body[i];
+        if (i >=0 && j >= 0)
+        {
+            ans.body[k] = this->body[i] & a.body[j];
+        }
+        else
+        {
+            ans.body[k] = 0;         // (this->body[i] & 0) = (a.body[i] & 0) = 0
+        }
+
+        i--;
+        j--;
     }
     ans.update();
     return ans;
@@ -166,10 +253,23 @@ BoolVector BoolVector::operator&(const BoolVector a) const
 
 BoolVector BoolVector::operator|(const BoolVector a) const
 {
-	BoolVector ans(min(this->n, a.n));
-    for (int i = 0; i < min(this->n, a.n); i++)
+    BoolVector ans(max(this->n, a.n));
+    for (int i = this->n, j = a.n, k = max(this->n, a.n); i >= 0 || j >= 0; k--)
     {
-        ans.body[i] = this->body[i] || a.body[i];
+        if (i >=0 && j >= 0)
+        {
+            ans.body[k] = this->body[i] | a.body[j];
+        }
+        else
+        {
+            if (i >= 0)
+                ans.body[k] = this->body[i];
+            else
+                ans.body[k] = a.body[j];
+        }
+
+        i--;
+        j--;
     }
     ans.update();
     return ans;
@@ -177,10 +277,23 @@ BoolVector BoolVector::operator|(const BoolVector a) const
 
 BoolVector BoolVector::operator^(const BoolVector a) const
 {
-	BoolVector ans(min(this->n, a.n));
-    for (int i = 0; i < min(this->n, a.n); i++)
+    BoolVector ans(max(this->n, a.n));
+    for (int i = this->n, j = a.n, k = max(this->n, a.n); i >= 0 || j >= 0; k--)
     {
-        ans.body[i] = this->body[i] ^ a.body[i];
+        if (i >=0 && j >= 0)
+        {
+            ans.body[k] = this->body[i] ^ a.body[j];
+        }
+        else
+        {
+            if (i >= 0)
+                ans.body[k] = this->body[i];
+            else
+                ans.body[k] = a.body[j];
+        }
+
+        i--;
+        j--;
     }
     ans.update();
     return ans;
@@ -190,116 +303,153 @@ BoolVector BoolVector::operator^(const BoolVector a) const
 
 bool BoolVector::operator!() const
 {
-	for (int i = 0; i < this->n; i++)
-	{
-		if (this->body[i])
-			return false;
-	}
-	return true;
+    for (int i = 0; i < this->n; i++)
+    {
+        if (this->body[i])
+            return false;
+    }
+    return true;
 }
 
 bool BoolVector::operator&&(const BoolVector a) const
 {
-	int x = 0,
-		y = 0;
-    for (int i = 0; i < max(this->n, a.n); i++)
+    bool x = false;
+    bool y = false;
+
+    for (int i = 0; i < this->n; i++)
     {
-		x += this->n >= i ? this->body[i] : 0;
-		y += a.n >= i ? a.body[i] : 0;
+        if (this->body[i])
+        {
+            x = true;
+            break;
+        }
     }
-    if (!x || !y)
-		return false;
-	return true;
+    for (int i = 0; i < a.n; i++)
+    {
+        if (a.body[i])
+        {
+            y = true;
+            break;
+        }
+    }
+    if (x && y)
+        return true;
+    return false;
 }
 
 bool BoolVector::operator||(const BoolVector a) const
 {
-	int x = 0,
-		y = 0;
-    for (int i = 0; i < max(this->n, a.n); i++)
+    bool x = false;
+    bool y = false;
+
+    for (int i = 0; i < this->n; i++)
     {
-		x += this->n >= i ? this->body[i] : 0;
-		y += a.n >= i ? a.body[i] : 0;
+        if (this->body[i])
+        {
+            x = true;
+            break;
+        }
+    }
+    for (int i = 0; i < a.n; i++)
+    {
+        if (a.body[i])
+        {
+            y = true;
+            break;
+        }
     }
     if (!x && !y)
-		return false;
-	return true;
+        return false;
+    return true;
 }
+
+// Array subscript operator
+
+bool BoolVector::operator[](int index) const
+{
+    if (index <= length && index > 0)
+    {
+        return body[(length - index) / 32] & (1 << ((index - 1) % 32));
+    } else
+    {
+        throw std::exception();
+    }
+}
+
 // Comparison operators
 
 bool BoolVector::operator==(const BoolVector a) const
 {
-	for (int i = max(this->n, a.n); i > 0; i--)
-	{
-		int x = this->n >= i ? this->body[i] : 0;
-		int y = a.n >= i ? a.body[i] : 0;
-		if (x != y)
-			return false;
-	}
-	return true;
+    if ((*this).n == a.n)
+    {
+        for (int i = 0; i < a.n; i++)
+        {
+            if (this->body[i] != a.body[i])
+                return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 bool BoolVector::operator!=(const BoolVector a) const
 {
-	if (*this == a)
-		return false;
-	return true;
+    if (*this == a)
+        return false;
+    return true;
 }
 
 bool BoolVector::operator>(const BoolVector a) const
 {
-	for (int i = max(this->n, a.n); i > 0; i--)
-	{
-		int x = this->n >= i ? this->body[i] : 0;
-		int y = a.n >= i ? a.body[i] : 0;
-		if (x && !y)
-			return true;
-		if (y && !x)
-			return false;
-	}
-	return false;
+    if ((*this).n == a.n)
+    {
+        for (int i = 0; i < a.n; i++)
+        {
+            if (this->body[i] > a.body[i])
+                return true;
+            else if (this->body[i] < a.body[i])
+                return false;
+        }
+    }
+    if ((*this).n > a.n)
+        return true;
+    return false;
 }
 
 bool BoolVector::operator>=(const BoolVector a) const
 {
-	if ((*this > a) || (*this == a))
-		return true;
-	return false;
+    if ((*this > a) || (*this == a))
+        return true;
+    return false;
 }
 
 bool BoolVector::operator<(const BoolVector a) const
 {
-	if ((*this > a) || (*this == a))
-		return false;
-	return true;
+    if ((*this > a) || (*this == a))
+        return false;
+    return true;
 }
 
 bool BoolVector::operator<=(const BoolVector a) const
 {
-	if (*this > a)
-		return false;
-	return true;
+    if (*this > a)
+        return false;
+    return true;
 }
 
 //------------------------- METHODS ----------------------------
 BoolVector BoolVector::con(const BoolVector a) const
 {
-    BoolVector ans(min(a.n, this->n));
-    for (int i = 0; i < min(a.n, this->n); i++)
-    {
-        ans.body[i] = a.body[i] && this->body[i];
-    }
+    BoolVector ans(max(this->n, a.n));
+    ans = (*this & a);
     ans.update();
     return ans;
 }
 
 BoolVector BoolVector::dis(const BoolVector a) const
 {
-    BoolVector ans(min(a.n, this->n));
-    for (int i = 0; i < min(a.n, this->n); i++)
-    {
-        ans.body[i] = a.body[i] || this->body[i];
-    }
+    BoolVector ans(max(this->n, a.n));
+    ans = *this | a;
     ans.update();
     return ans;
 }
@@ -307,10 +457,7 @@ BoolVector BoolVector::dis(const BoolVector a) const
 BoolVector BoolVector::neg() const
 {
     BoolVector ans(this->n);
-    for (int i = 0; i < this->n; i++)
-    {
-        ans.body[i] = ~this->body[i];
-    }
+    ans = ~ (*this);
     ans.update();
     return ans;
 }
@@ -322,12 +469,16 @@ int BoolVector::numOfOnes() const
 
 int BoolVector::numOfZeros() const
 {
-    return n - n_ones;
+    return length - n_ones;
 }
 
 //------------------------- SET/GET METHODS --------------------
-
 int BoolVector::getLength() const
+{
+    return length;
+}
+
+int BoolVector::getBodyLength() const
 {
     return n;
 }
