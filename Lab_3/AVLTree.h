@@ -24,12 +24,9 @@ class AVLTree
 {
     AVLNode *top;
 
-    unsigned char height(AVLNode *node);
-    unsigned char heightDiff(AVLNode *node);
+    unsigned char height(AVLNode *node) const;
+    unsigned char heightDiff(AVLNode *node) const;
     void updateHeight(AVLNode *node);
-
-    AVLNode* ins(int key, int val);
-    AVLNode* rmv(int key);
 
 public:
     AVLTree();
@@ -39,10 +36,10 @@ public:
     AVLTree& operator=(AVLTree &&other);
     ~AVLTree();
 
+    bool isEmpty() const;
     void insert(int key, int val);
     void remove(int key);
     int find(int key) const;
-    bool isEmpty() const;
 };
 
 #endif // AVLTREE_H
