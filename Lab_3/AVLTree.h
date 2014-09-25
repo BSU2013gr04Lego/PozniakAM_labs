@@ -22,11 +22,16 @@ struct AVLNode
 
 class AVLTree
 {
-    AVLNode *top;
+    AVLNode *root;
 
     unsigned char height(AVLNode *node) const;
     unsigned char heightDiff(AVLNode *node) const;
     void updateHeight(AVLNode *node);
+
+    AVLNode* ins(AVLNode *node, int key, int val);
+    AVLNode* rmv(AVLNode *node, int key);
+    AVLNode* findMin(AVLNode *node) const;
+    AVLNode* rmMin(AVLNode *node);
 
 public:
     AVLTree();
@@ -40,6 +45,10 @@ public:
     void insert(int key, int val);
     void remove(int key);
     int find(int key) const;
+
+
+    AVLNode* getRoot() const;
+    void drawTree(AVLNode *node) const;
 };
 
 #endif // AVLTREE_H
