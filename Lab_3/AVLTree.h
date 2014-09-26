@@ -14,9 +14,9 @@ struct AVLNode
     {
         this->key = key;
         this->value = val;
-        left = nullptr;
-        right = nullptr;
-        height = 1;
+        this->left = nullptr;
+        this->right = nullptr;
+        this->height = 1;
     }
 };
 
@@ -33,22 +33,31 @@ class AVLTree
     AVLNode* findMin(AVLNode *node) const;
     AVLNode* rmMin(AVLNode *node);
 
+    AVLNode* rotateL(AVLNode *node);
+    AVLNode* rotateR(AVLNode *node);
+    AVLNode* balance(AVLNode *node);
+
+    void draw(AVLNode *node) const;
+
 public:
     AVLTree();
-    AVLTree(const AVLTree &other);
+    AVLTree(AVLTree &other);
     AVLTree(AVLTree &&other);
-    AVLTree& operator=(const AVLTree &other);
+    AVLTree& operator=(AVLTree &other);
     AVLTree& operator=(AVLTree &&other);
     ~AVLTree();
 
+    // Binary tree methods
     bool isEmpty() const;
     void insert(int key, int val);
     void remove(int key);
     int find(int key) const;
+    void clear();
 
+    // Methods for balancing
 
-    AVLNode* getRoot() const;
-    void drawTree(AVLNode *node) const;
+    // Debug methods
+    void drawTree() const;
 };
 
 #endif // AVLTREE_H

@@ -11,28 +11,42 @@ AVLTree::AVLTree() : root(nullptr)
 {
 }
 
-AVLTree::AVLTree(const AVLTree &other) : root(nullptr)
+AVLTree::AVLTree(AVLTree &other) : root(nullptr)
 {
-    // TODO
-    // Copy every node
+    AVLTree temp;
+    while (!other.isEmpty())
+    {
+        this->insert(other.root->key, other.root->value);
+        temp.insert(other.root->key, other.root->value);
+        other.remove(other.root->key);
+    }
+    swap(other.root, temp.root);
 }
 
 AVLTree::AVLTree(AVLTree &&other) : root(nullptr)
 {
-    // TODO
-    // Move every node
+    swap (this->root, other.root);
 }
 
-AVLTree& AVLTree::operator=(const AVLTree &other)
+AVLTree& AVLTree::operator=(AVLTree &other)
 {
-    // TODO
-    // Copy every node
+    AVLTree temp;
+    this->clear();
+    while (!other.isEmpty())
+    {
+        this->insert(other.root->key, other.root->value);
+        temp.insert(other.root->key, other.root->value);
+        other.remove(other.root->key);
+    }
+    swap(other.root, temp.root);
+    return *this;
 }
 
 AVLTree& AVLTree::operator=(AVLTree &&other)
 {
-    // TODO
-    // Swap every node
+    if (&other != this)
+        swap (this->root, other.root);
+    return *this;
 }
 
 AVLTree::~AVLTree()
@@ -46,17 +60,19 @@ AVLTree::~AVLTree()
 //--------------- /THE GREAT 6 ----------------------------
 //---------------  PRIVATE METHODS ------------------------
 
-unsigned char height(AVLNode *node)
+unsigned char AVLTree::height(AVLNode *node) const
 {
-    return node->height;
+    if (node)
+        return node->height;
+    return 0;
 }
 
-unsigned char heightDiff(AVLNode *node)
+unsigned char AVLTree::heightDiff(AVLNode *node) const
 {
     return height(node->right) - height(node->left);
 }
 
-void updateHeight(AVLNode *node)
+void AVLTree::updateHeight(AVLNode *node)
 {
     unsigned char leftHeight = height(node->left);
     unsigned char rightHeight = height(node->right);
@@ -74,7 +90,7 @@ AVLNode* AVLTree::ins(AVLNode *node, int key, int val)
         node->left = ins(node->left, key, val);
     else
         node->right = ins(node->right, key, val);
-    return node;
+    return balance(node);
 }
 
 AVLNode* AVLTree::rmv(AVLNode *node, int key)
@@ -99,9 +115,9 @@ AVLNode* AVLTree::rmv(AVLNode *node, int key)
         AVLNode *min = findMin(right);
         min->right = rmMin(right);
         min->left = left;
-        return min;
+        return balance(min);
     }
-    return node;
+    return balance(node);
 }
 
 AVLNode* AVLTree::findMin(AVLNode *node) const
@@ -116,7 +132,59 @@ AVLNode* AVLTree::rmMin(AVLNode *node)
     if (!(node->left))
         return node->right;
     node->left = rmMin(node->left);
+    return balance(node);
+}
+
+AVLNode* AVLTree::rotateL(AVLNode *node)
+{
+    AVLNode *nodeR = node->right;
+    node->right = nodeR->left;
+    nodeR->left = node;
+    updateHeight(nodeR->left);
+    updateHeight(nodeR);
+    return nodeR;
+}
+
+AVLNode* AVLTree::rotateR(AVLNode *node)
+{
+    AVLNode *nodeL = node->left;
+    node->left = nodeL->right;
+    nodeL->right = node;
+    updateHeight(nodeL->right);
+    updateHeight(nodeL);
+    return nodeL;
+}
+
+AVLNode* AVLTree::balance(AVLNode *node)
+{
+    updateHeight(node);
+    if (heightDiff(node) == 2)
+    {
+        if (heightDiff(node->right) == -1)
+            node->right = rotateR(node->right);
+        return rotateL(node);
+    }
+    else if (heightDiff(node) == -2)
+    {
+        if (heightDiff(node->left) == 1)
+            node->left = rotateL(node->left);
+        return rotateR(node);
+    }
     return node;
+}
+
+void AVLTree::draw(AVLNode *node) const
+{
+    if (node)
+    {
+        cout << " (" << node->key << ", " << node->value << ")[" << (int)node->height << "]";
+        draw(node->left);
+        draw(node->right);
+    }
+    else
+    {
+        cout << endl;
+    }
 }
 
 //--------------- /PRIVATE METHODS ------------------------
@@ -164,24 +232,19 @@ int AVLTree::find(int key) const
     }
 }
 
-// For find bugs
-AVLNode* AVLTree::getRoot() const
+void AVLTree::clear()
 {
-    return root;
+    while (!isEmpty())
+    {
+        remove(root->key);
+    }
 }
 
-void AVLTree::drawTree(AVLNode *node) const
+// For find bugs
+
+void AVLTree::drawTree() const
 {
-    if (node)
-    {
-        cout << " (" << node->key << ", " << node->value << ")";
-        drawTree(node->left);
-        drawTree(node->right);
-    }
-    else
-    {
-        cout << endl;
-    }
+    draw(root);
 }
 
 //--------------- /PUBLIC METHODS -------------------------
