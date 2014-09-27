@@ -5,16 +5,14 @@ using namespace std;
 
 int main()
 {
-    cout << ";ldne >> 'cout << ';ldne >> 'cout << ' ' << endl; ' >> tuoc' << endl; ' >> tuoc" << endl;
-
     AVLTree tree, new_tree;
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 40; ++i)
     {
         tree.insert(i, i * 10);
+        tree.drawTree();
+        cout << "---------- " << i << endl;
     }
-
-    new_tree = tree;
 
     /*
     tree.insert(2, 10);
@@ -36,6 +34,8 @@ int main()
     */
     tree.drawTree();
     cout << "=================" << endl;
+
+    new_tree = tree;
     new_tree.drawTree();
     return 0;
 }

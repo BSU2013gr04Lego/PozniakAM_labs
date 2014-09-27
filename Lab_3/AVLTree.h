@@ -1,31 +1,14 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 
-struct AVLNode
-{
-    AVLNode *left;
-    AVLNode *right;
-    unsigned char height;
-    int key;
-    int value;
-
-    // Constructor
-    AVLNode(int key, int val)
-    {
-        this->key = key;
-        this->value = val;
-        this->left = nullptr;
-        this->right = nullptr;
-        this->height = 1;
-    }
-};
+#include "TreeNode.h"
 
 class AVLTree
 {
     AVLNode *root;
 
     unsigned char height(AVLNode *node) const;
-    unsigned char heightDiff(AVLNode *node) const;
+    char heightDiff(AVLNode *node) const;
     void updateHeight(AVLNode *node);
 
     AVLNode* ins(AVLNode *node, int key, int val);
@@ -37,7 +20,7 @@ class AVLTree
     AVLNode* rotateR(AVLNode *node);
     AVLNode* balance(AVLNode *node);
 
-    void draw(AVLNode *node) const;
+    void draw(AVLNode *node, int padding, int lines) const;
 
 public:
     AVLTree();

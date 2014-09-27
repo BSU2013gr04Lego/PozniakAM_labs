@@ -67,9 +67,9 @@ unsigned char AVLTree::height(AVLNode *node) const
     return 0;
 }
 
-unsigned char AVLTree::heightDiff(AVLNode *node) const
+char AVLTree::heightDiff(AVLNode *node) const
 {
-    return height(node->right) - height(node->left);
+    return ((node->right) ? height(node->right) : 0) - ((node->left) ? height(node->left) : 0);
 }
 
 void AVLTree::updateHeight(AVLNode *node)
@@ -173,17 +173,15 @@ AVLNode* AVLTree::balance(AVLNode *node)
     return node;
 }
 
-void AVLTree::draw(AVLNode *node) const
+void AVLTree::draw(AVLNode *node, int padding, int lines) const
 {
     if (node)
     {
-        cout << " (" << node->key << ", " << node->value << ")[" << (int)node->height << "]";
-        draw(node->left);
-        draw(node->right);
-    }
-    else
-    {
-        cout << endl;
+        for (int i = 0; i < padding; ++i)
+            cout << "    ";
+        cout << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << endl;
+        draw(node->right, padding + 1, lines  + 1);
+        draw(node->left, padding + 1, lines);
     }
 }
 
@@ -244,7 +242,7 @@ void AVLTree::clear()
 
 void AVLTree::drawTree() const
 {
-    draw(root);
+    draw(root, 0, 0);
 }
 
 //--------------- /PUBLIC METHODS -------------------------
