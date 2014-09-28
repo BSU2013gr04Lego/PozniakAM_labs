@@ -1,6 +1,7 @@
 #include <utility>
 #include <exception>
 #include <iostream>
+#include <string>
 #include "AVLTree.h"
 
 using namespace std;
@@ -173,15 +174,13 @@ AVLNode* AVLTree::balance(AVLNode *node)
     return node;
 }
 
-void AVLTree::draw(AVLNode *node, int padding, int lines) const
+void AVLTree::draw(AVLNode *node, string s) const
 {
     if (node)
     {
-        for (int i = 0; i < padding; ++i)
-            cout << "    ";
-        cout << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << endl;
-        draw(node->right, padding + 1, lines  + 1);
-        draw(node->left, padding + 1, lines);
+        cout << (s.length() ? (s.substr(0, s.length() - 4) + "|---") : "") << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << endl;
+        draw(node->right, s + "|   ");
+        draw(node->left, s + "    ");
     }
 }
 
@@ -242,7 +241,7 @@ void AVLTree::clear()
 
 void AVLTree::drawTree() const
 {
-    draw(root, 0, 0);
+    draw(root, "");
 }
 
 //--------------- /PUBLIC METHODS -------------------------

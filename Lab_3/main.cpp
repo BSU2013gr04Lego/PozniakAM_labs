@@ -10,8 +10,6 @@ int main()
     for (int i = 0; i < 40; ++i)
     {
         tree.insert(i, i * 10);
-        tree.drawTree();
-        cout << "---------- " << i << endl;
     }
 
     /*

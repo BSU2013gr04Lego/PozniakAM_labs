@@ -1,6 +1,7 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 
+#include <string>
 #include "TreeNode.h"
 
 class AVLTree
@@ -20,7 +21,7 @@ class AVLTree
     AVLNode* rotateR(AVLNode *node);
     AVLNode* balance(AVLNode *node);
 
-    void draw(AVLNode *node, int padding, int lines) const;
+    void draw(AVLNode *node, std::string s) const;
 
 public:
     AVLTree();
