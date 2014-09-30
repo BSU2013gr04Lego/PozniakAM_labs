@@ -192,8 +192,13 @@ int AVLTree::paint(AVLNode *node, QPainter *painter, int row, int column) const
 {
     if (node)
     {
+        int saved_row = row;
         painter->fillRect(column * WIDTH, row * HEIGHT, WIDTH - 4, HEIGHT - 3, QBrush(Qt::green));
+        painter->drawLine((column + 1) * WIDTH - 4, (row + 1) * HEIGHT - HEIGHT / 2 - 1,
+                          (column + 1) * WIDTH, (row + 1) * HEIGHT - HEIGHT / 2 - 1);
         row = paint(node->left, painter, row, column + 1);
+        painter->drawLine((column + 1) * WIDTH - WIDTH / 2 - 2, (saved_row + 1) * HEIGHT - 3,
+                          (column + 1) * WIDTH, (row + 1) * HEIGHT + HEIGHT / 2 + 1);
         row = paint(node->right, painter, row + 1, column + 1);
     }
     else
