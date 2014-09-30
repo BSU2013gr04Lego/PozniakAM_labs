@@ -7,3 +7,5 @@ obj/
 *.[oa]
 *.cbp
 *.save
+*user*
+Lab_3/Qt/build*
