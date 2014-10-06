@@ -192,20 +192,22 @@ int AVLTree::paint(AVLNode *node, QPainter *painter, int row, int column) const
 {
     if (node)
     {
-        int saved_row = row;
+        int saved_column = column;
         painter->fillRect(column * WIDTH, row * HEIGHT, WIDTH - 4, HEIGHT - 3, QBrush(Qt::green));
-        painter->drawLine((column + 1) * WIDTH - 4, (row + 1) * HEIGHT - HEIGHT / 2 - 1,
-                          (column + 1) * WIDTH, (row + 1) * HEIGHT - HEIGHT / 2 - 1);
-        row = paint(node->left, painter, row, column + 1);
-        painter->drawLine((column + 1) * WIDTH - WIDTH / 2 - 2, (saved_row + 1) * HEIGHT - 3,
-                          (column + 1) * WIDTH, (row + 1) * HEIGHT + HEIGHT / 2 + 1);
-        row = paint(node->right, painter, row + 1, column + 1);
+        painter->drawText(column * WIDTH, row * HEIGHT, WIDTH - 4, HEIGHT - 3,
+                          Qt::AlignCenter, QString::number(node->key));
+        painter->drawLine((column + 1) * WIDTH - WIDTH / 2 - 2, (row + 1) * HEIGHT - 3,
+                          (column + 1) * WIDTH - WIDTH / 2 - 2, (row + 1) * HEIGHT);
+        column = paint(node->left, painter, row + 1, column);
+        painter->drawLine((saved_column + 1) * WIDTH - 4, (row + 1) * HEIGHT - HEIGHT / 2 - 1,
+                          (column + 2) * WIDTH - WIDTH / 2 - 2, (row + 1) * HEIGHT);
+        column = paint(node->right, painter, row + 1, column + 1);
     }
     else
     {
         painter->fillRect(column * WIDTH, row * HEIGHT, WIDTH -4, HEIGHT - 3, QBrush(Qt::gray));
     }
-    return row;
+    return column;
 }
 
 //--------------- /PRIVATE METHODS ------------------------
@@ -256,6 +258,7 @@ int AVLTree::find(int key) const
             return current->value;
         }
     }
+    return 0; // but t should never start
 }
 
 void AVLTree::clear()

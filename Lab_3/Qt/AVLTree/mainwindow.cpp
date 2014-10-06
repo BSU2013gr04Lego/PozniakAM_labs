@@ -15,7 +15,7 @@ MainWindow::MainWindow()
     central->setLayout(lout);
 
     setCentralWidget(central);
-    setWindowTitle("Labirinth");
+    setWindowTitle("AVLTree");
 }
 
 MainWindow::~MainWindow()

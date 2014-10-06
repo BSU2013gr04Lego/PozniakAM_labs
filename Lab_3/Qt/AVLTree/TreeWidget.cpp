@@ -7,7 +7,7 @@ using namespace std;
 TreeWidget::TreeWidget(QWidget *parent) :
     QWidget(parent)
 {
-    for (int i = 0; i < 40; ++i)
+    for (int i = 0; i < 100; ++i)
         m_tree.insert(i, i * 10);
 }
 
@@ -23,17 +23,20 @@ TreeWidget::~TreeWidget()
 
 QSize TreeWidget::sizeHint() const
 {
-    return QSize(WIDTH * (m_tree.rootHeight() + 1) + 20, HEIGHT * pow(2, m_tree.rootHeight()) + 20);
+    return QSize(HEIGHT * pow(2, m_tree.rootHeight()) + 20,
+                 WIDTH * (m_tree.rootHeight() + 1) + 20);
 }
 
 QSize TreeWidget::minimumSize() const
 {
-    return QSize(WIDTH * (m_tree.rootHeight() + 1) + 20, HEIGHT * pow(2, m_tree.rootHeight()) + 20);
+    return QSize(HEIGHT * pow(2, m_tree.rootHeight()) + 20,
+                 WIDTH * (m_tree.rootHeight() + 1) + 20);
 }
 
 QSize TreeWidget::maximumSize() const
 {
-    return QSize(WIDTH * (m_tree.rootHeight() + 1) + 20, HEIGHT * pow(2, m_tree.rootHeight()) + 20);
+    return QSize(HEIGHT * pow(2, m_tree.rootHeight()) + 20,
+                 WIDTH * (m_tree.rootHeight() + 1) + 20);
 }
 
 //---------------- PUBLIC METHODS --------------
