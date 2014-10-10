@@ -37,3 +37,5 @@ int main()
     new_tree.drawTree();
     return 0;
 }
+
+// TODO у вас у гэтай дэрэкторыі не заліты файл AVLnode.h

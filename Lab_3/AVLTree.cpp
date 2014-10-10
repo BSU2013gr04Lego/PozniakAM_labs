@@ -21,7 +21,7 @@ AVLTree::AVLTree(AVLTree &other) : root(nullptr)
         temp.insert(other.root->key, other.root->value);
         other.remove(other.root->key);
     }
-    swap(other.root, temp.root);
+    swap(other.root, temp.root);// а зразумеў, чаму не конст, але мс'ё ведае толк у вычварэнні, можна зрабіць неразбуральнае капіраванне
 }
 
 AVLTree::AVLTree(AVLTree &&other) : root(nullptr)
@@ -29,7 +29,7 @@ AVLTree::AVLTree(AVLTree &&other) : root(nullptr)
     swap (this->root, other.root);
 }
 
-AVLTree& AVLTree::operator=(AVLTree &other)
+AVLTree& AVLTree::operator=(AVLTree &other)// TODO а дзе абарона супраць a=a; ?
 {
     AVLTree temp;
     this->clear();
@@ -45,7 +45,7 @@ AVLTree& AVLTree::operator=(AVLTree &other)
 
 AVLTree& AVLTree::operator=(AVLTree &&other)
 {
-    if (&other != this)
+    if (&other != this) // а вось тут тэарэтычна можна і без яе
         swap (this->root, other.root);
     return *this;
 }
@@ -70,7 +70,7 @@ unsigned char AVLTree::height(AVLNode *node) const
 
 char AVLTree::heightDiff(AVLNode *node) const
 {
-    return ((node->right) ? height(node->right) : 0) - ((node->left) ? height(node->left) : 0);
+    return ((node->right) ? height(node->right) : 0) - ((node->left) ? height(node->left) : 0);// TODO так у вас у функцыі height ужо праверка ёсць
 }
 
 void AVLTree::updateHeight(AVLNode *node)
@@ -187,7 +187,7 @@ void AVLTree::draw(AVLNode *node, string s) const
 //--------------- /PRIVATE METHODS ------------------------
 //---------------  PUBLIC METHODS -------------------------
 
-bool AVLTree::isEmpty() const
+bool AVLTree::isEmpty() const // TODO return !root;
 {
     if (root)
         return false;
