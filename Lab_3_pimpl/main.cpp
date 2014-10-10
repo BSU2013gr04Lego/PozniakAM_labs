@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    ConsoleAVL tree, new_tree;
+    ConsoleAVL tree;
 
     for (int i = 0; i < 40; ++i)
     {
@@ -33,7 +33,7 @@ int main()
     tree.drawTree();
     cout << "=================" << endl;
 
-    new_tree = tree;
+    ConsoleAVL new_tree(tree);
     new_tree.drawTree();
     cout << "=================" << endl;
     return 0;

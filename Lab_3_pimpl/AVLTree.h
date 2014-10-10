@@ -21,8 +21,8 @@ class AVLTree
     AVLNode* balance(AVLNode *node);
 
 protected:
-    AVLImpl *pimpl;
     AVLNode *root;
+    AVLImpl *pimpl;
 
 public:
     AVLTree();
