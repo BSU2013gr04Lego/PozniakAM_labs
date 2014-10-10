@@ -12,16 +12,9 @@ AVLTree::AVLTree() : root(nullptr)
 {
 }
 
-AVLTree::AVLTree(AVLTree &other) : root(nullptr)
+AVLTree::AVLTree(const AVLTree &other) : root(nullptr)
 {
-    AVLTree temp;
-    while (!other.isEmpty())
-    {
-        this->insert(other.root->key, other.root->value);
-        temp.insert(other.root->key, other.root->value);
-        other.remove(other.root->key);
-    }
-    swap(other.root, temp.root);// а зразумеў, чаму не конст, але мс'ё ведае толк у вычварэнні, можна зрабіць неразбуральнае капіраванне
+    other.copy(this);
 }
 
 AVLTree::AVLTree(AVLTree &&other) : root(nullptr)
@@ -29,24 +22,18 @@ AVLTree::AVLTree(AVLTree &&other) : root(nullptr)
     swap (this->root, other.root);
 }
 
-AVLTree& AVLTree::operator=(AVLTree &other)// TODO а дзе абарона супраць a=a; ?
+AVLTree& AVLTree::operator=(const AVLTree &other)
 {
-    AVLTree temp;
-    this->clear();
-    while (!other.isEmpty())
+    if (this != &other)
     {
-        this->insert(other.root->key, other.root->value);
-        temp.insert(other.root->key, other.root->value);
-        other.remove(other.root->key);
+        other.copy(this);
     }
-    swap(other.root, temp.root);
     return *this;
 }
 
 AVLTree& AVLTree::operator=(AVLTree &&other)
 {
-    if (&other != this) // а вось тут тэарэтычна можна і без яе
-        swap (this->root, other.root);
+    swap (this->root, other.root);
     return *this;
 }
 
@@ -70,7 +57,7 @@ unsigned char AVLTree::height(AVLNode *node) const
 
 char AVLTree::heightDiff(AVLNode *node) const
 {
-    return ((node->right) ? height(node->right) : 0) - ((node->left) ? height(node->left) : 0);// TODO так у вас у функцыі height ужо праверка ёсць
+    return height(node->right) - height(node->left);
 }
 
 void AVLTree::updateHeight(AVLNode *node)
@@ -178,20 +165,29 @@ void AVLTree::draw(AVLNode *node, string s) const
 {
     if (node)
     {
-        cout << (s.length() ? (s.substr(0, s.length() - 4) + "|---") : "") << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << endl;
+        cout << (s.length() ? (s.substr(0, s.length() - 4) + "|---") : "")
+             << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << endl;
         draw(node->right, s + "|   ");
         draw(node->left, s + "    ");
     }
 }
 
+
+void AVLTree::cpy(const AVLNode *node, AVLTree *drain) const
+{
+    drain->insert(node->key, node->value);
+    if (node->left)
+        cpy(node->left, drain);
+    if (node->right)
+        cpy(node->right, drain);
+}
+
 //--------------- /PRIVATE METHODS ------------------------
 //---------------  PUBLIC METHODS -------------------------
 
-bool AVLTree::isEmpty() const // TODO return !root;
+bool AVLTree::isEmpty() const
 {
-    if (root)
-        return false;
-    return true;
+    return !root;
 }
 
 void AVLTree::insert(int key, int val)
@@ -227,6 +223,12 @@ int AVLTree::find(int key) const
             return current->value;
         }
     }
+}
+
+void AVLTree::copy(AVLTree *drain) const
+{
+    drain->clear();
+    cpy(root, drain);
 }
 
 void AVLTree::clear()

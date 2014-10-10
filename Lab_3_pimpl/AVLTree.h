@@ -20,6 +20,8 @@ class AVLTree
     AVLNode* rotateR(AVLNode *node);
     AVLNode* balance(AVLNode *node);
 
+    void cpy(const AVLNode *node, AVLTree *drain) const;
+
 protected:
     AVLNode *root;
     AVLImpl *pimpl;
@@ -27,9 +29,9 @@ protected:
 public:
     AVLTree();
     AVLTree(AVLImpl *p);
-    AVLTree(AVLTree &other);
+    AVLTree(const AVLTree &other);
     AVLTree(AVLTree &&other);
-    AVLTree& operator=(AVLTree &other);
+    AVLTree& operator=(const AVLTree &other);
     AVLTree& operator=(AVLTree &&other);
     virtual ~AVLTree();
 
@@ -38,6 +40,7 @@ public:
     void insert(int key, int val);
     void remove(int key);
     int find(int key) const;
+    void copy(AVLTree *drain) const; // copy this within drain
     void clear();
 };
 

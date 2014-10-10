@@ -18,17 +18,10 @@ AVLTree::AVLTree(AVLImpl *p) : root(nullptr),
 {
 }
 
-AVLTree::AVLTree(AVLTree &other) : root(nullptr),
+AVLTree::AVLTree(const AVLTree &other) : root(nullptr),
                                    pimpl(nullptr)
 {
-    AVLTree temp;
-    while (!other.isEmpty())
-    {
-        this->insert(other.root->key, other.root->value);
-        temp.insert(other.root->key, other.root->value);
-        other.remove(other.root->key);
-    }
-    swap(other.root, temp.root);
+    other.copy(this);
 }
 
 AVLTree::AVLTree(AVLTree &&other) : root(nullptr),
@@ -37,26 +30,18 @@ AVLTree::AVLTree(AVLTree &&other) : root(nullptr),
     swap (this->root, other.root);
 }
 
-AVLTree& AVLTree::operator=(AVLTree &other)
+AVLTree& AVLTree::operator=(const AVLTree &other)
 {
-    AVLTree temp;
-    this->clear();
-    while (!other.isEmpty())
+    if (this != &other)
     {
-        this->insert(other.root->key, other.root->value);
-        temp.insert(other.root->key, other.root->value);
-        other.remove(other.root->key);
+        other.copy(this);
     }
-    swap(other.root, temp.root);
-    this->pimpl = nullptr;
     return *this;
 }
 
 AVLTree& AVLTree::operator=(AVLTree &&other)
 {
-    if (&other != this)
-        swap (this->root, other.root);
-    this->pimpl = nullptr;
+    swap (this->root, other.root);
     return *this;
 }
 
@@ -81,7 +66,7 @@ unsigned char AVLTree::height(AVLNode *node) const
 
 char AVLTree::heightDiff(AVLNode *node) const
 {
-    return ((node->right) ? height(node->right) : 0) - ((node->left) ? height(node->left) : 0);
+    return height(node->right) - height(node->left);
 }
 
 void AVLTree::updateHeight(AVLNode *node)
@@ -185,14 +170,21 @@ AVLNode* AVLTree::balance(AVLNode *node)
     return node;
 }
 
+void AVLTree::cpy(const AVLNode *node, AVLTree *drain) const
+{
+    drain->insert(node->key, node->value);
+    if (node->left)
+        cpy(node->left, drain);
+    if (node->right)
+        cpy(node->right, drain);
+}
+
 //--------------- /PRIVATE METHODS ------------------------
 //---------------  PUBLIC METHODS -------------------------
 
 bool AVLTree::isEmpty() const
 {
-    if (root)
-        return false;
-    return true;
+    return !root;
 }
 
 void AVLTree::insert(int key, int val)
@@ -228,6 +220,12 @@ int AVLTree::find(int key) const
             return current->value;
         }
     }
+}
+
+void AVLTree::copy(AVLTree *drain) const
+{
+    drain->clear();
+    cpy(root, drain);
 }
 
 void AVLTree::clear()

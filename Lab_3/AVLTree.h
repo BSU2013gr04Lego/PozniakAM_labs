@@ -23,11 +23,13 @@ class AVLTree
 
     void draw(AVLNode *node, std::string s) const;
 
+    void cpy(const AVLNode *node, AVLTree *drain) const;
+
 public:
     AVLTree();
-    AVLTree(AVLTree &other);//для бяспекі трэба const
+    AVLTree(const AVLTree &other);
     AVLTree(AVLTree &&other);
-    AVLTree& operator=(AVLTree &other);// і тут таксама
+    AVLTree& operator=(const AVLTree &other);
     AVLTree& operator=(AVLTree &&other);
     ~AVLTree();
 
@@ -36,9 +38,8 @@ public:
     void insert(int key, int val);
     void remove(int key);
     int find(int key) const;
+    void copy(AVLTree *drain) const; // copy this within drain
     void clear();
-
-    // Methods for balancing//вось яна небеспечнасць каментараў, яны жывуць сваім жыццём :)
 
     // Debug methods
     void drawTree() const;
