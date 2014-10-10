@@ -25,9 +25,9 @@ class AVLTree
 
 public:
     AVLTree();
-    AVLTree(AVLTree &other);
+    AVLTree(AVLTree &other);//для бяспекі трэба const
     AVLTree(AVLTree &&other);
-    AVLTree& operator=(AVLTree &other);
+    AVLTree& operator=(AVLTree &other);// і тут таксама
     AVLTree& operator=(AVLTree &&other);
     ~AVLTree();
 
@@ -38,7 +38,7 @@ public:
     int find(int key) const;
     void clear();
 
-    // Methods for balancing
+    // Methods for balancing//вось яна небеспечнасць каментараў, яны жывуць сваім жыццём :)
 
     // Debug methods
     void drawTree() const;
