@@ -8,24 +8,28 @@ using namespace std;
 
 //---------------- THE GREAT 6 ----------------------------
 
-AVLTree::AVLTree() : root(nullptr),
-                     pimpl(nullptr)
+AVLTree::AVLTree() :
+    root(nullptr),
+    pimpl(new ConsoleImpl)
 {
 }
 
-AVLTree::AVLTree(AVLImpl *p) : root(nullptr),
-                               pimpl(p)
+AVLTree::AVLTree(ConsoleImpl *p) :
+    root(nullptr),
+    pimpl(p)
 {
 }
 
-AVLTree::AVLTree(const AVLTree &other) : root(nullptr),
-                                   pimpl(nullptr)
+AVLTree::AVLTree(const AVLTree &other) :
+    root(nullptr),
+    pimpl(new ConsoleImpl)
 {
     other.copy(this);
 }
 
-AVLTree::AVLTree(AVLTree &&other) : root(nullptr),
-                                    pimpl(nullptr)
+AVLTree::AVLTree(AVLTree &&other) :
+    root(nullptr),
+    pimpl(new ConsoleImpl)
 {
     swap (this->root, other.root);
 }
@@ -180,6 +184,30 @@ void AVLTree::cpy(const AVLNode *node, AVLTree *drain) const
 }
 
 //--------------- /PRIVATE METHODS ------------------------
+//---------------  PROTECTED METHODS ----------------------
+
+int AVLTree::find_phase(int key) const
+{
+    AVLNode *current = this->root;
+    while (current->key != key)
+    {
+        if (key < current->key)
+        {
+            current = current->left;
+        }
+        if (key > current->key)
+        {
+            current = current->right;
+        }
+        if (key == current->key)
+        {
+            return current->value;
+        }
+    }
+    return 0; // special value for case when there is no node with given key
+}
+
+//---------------  PROTECTED METHODS ----------------------
 //---------------  PUBLIC METHODS -------------------------
 
 bool AVLTree::isEmpty() const
@@ -200,26 +228,10 @@ void AVLTree::remove(int key)
 int AVLTree::find(int key) const
 
 {
-    AVLNode *current = root;
-    if (!current)
-    {
+    if (isEmpty())
         throw exception();
-    }
-    while (current->key != key)
-    {
-        if (key < current->key)
-        {
-            current = current->left;
-        }
-        if (key > current->key)
-        {
-            current = current->right;
-        }
-        if (key == current->key)
-        {
-            return current->value;
-        }
-    }
+    int ans = find_phase(key);
+    return ans != 0 ? (ans) : (throw exception());
 }
 
 void AVLTree::copy(AVLTree *drain) const

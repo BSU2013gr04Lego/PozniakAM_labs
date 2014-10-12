@@ -5,7 +5,7 @@ using namespace std;
 
 //---------------- THE GREAT 6 ----------------------------
 
-ConsoleAVL::ConsoleAVL() : AVLTree(new ConsoleImpl)
+ConsoleAVL::ConsoleAVL() : AVLTree()
 {
 }
 
@@ -15,12 +15,10 @@ ConsoleAVL::ConsoleAVL(ConsoleImpl *p) : AVLTree(p)
 
 ConsoleAVL::ConsoleAVL(ConsoleAVL &other) : AVLTree(other)
 {
-    this->pimpl = new ConsoleImpl;
 }
 
 ConsoleAVL::ConsoleAVL(ConsoleAVL &&other) : AVLTree(other)
 {
-    this->pimpl = new ConsoleImpl;
 }
 
 ConsoleAVL& ConsoleAVL::operator=(ConsoleAVL &other)
@@ -34,7 +32,6 @@ ConsoleAVL& ConsoleAVL::operator=(ConsoleAVL &other)
         other.remove(other.root->key);
     }
     swap(other.root, temp.root);
-    this->pimpl = new ConsoleImpl;
     return *this;
 }
 
@@ -42,7 +39,6 @@ ConsoleAVL& ConsoleAVL::operator=(ConsoleAVL &&other)
 {
     if (&other != this)
         swap (this->root, other.root);
-    this->pimpl = nullptr;
     return *this;
 }
 
@@ -51,6 +47,30 @@ ConsoleAVL::~ConsoleAVL()
 }
 
 //----------------/THE GREAT 6 ----------------------------
+//---------------  PROTECTED METHODS ----------------------
+
+int ConsoleAVL::find_phase(int key) const
+{
+    AVLNode *current = this->root;
+    while (current->key != key)
+    {
+        if (key < current->key)
+        {
+            current = current->left;
+        }
+        if (key > current->key)
+        {
+            current = current->right;
+        }
+        if (key == current->key)
+        {
+            return current->value;
+        }
+    }
+    throw exception();
+}
+
+//---------------  PROTECTED METHODS ----------------------
 //---------------  PUBLIC METHODS -------------------------
 
 void ConsoleAVL::drawTree() const
