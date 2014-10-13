@@ -1,4 +1,4 @@
-#include "ConsoleAVL.h"
+#include "BeautyCAVL.h"
 #include <utility>
 #include <iostream>
 
@@ -6,44 +6,46 @@ using namespace std;
 
 //---------------- THE GREAT 6 ----------------------------
 
-ConsoleAVL::ConsoleAVL() :
-	AVLTree()
+BeautyCAVL::BeautyCAVL() :
+	ConsoleAVL()
 {
 }
 
-ConsoleAVL::ConsoleAVL(ConsoleAVL &other) :
-	AVLTree(other)
+BeautyCAVL::BeautyCAVL(BeautyCAVL &other) :
+	ConsoleAVL(other)
 {
 }
 
-ConsoleAVL::ConsoleAVL(ConsoleAVL &&other) :
-	AVLTree(other)
+BeautyCAVL::BeautyCAVL(BeautyCAVL &&other) :
+	ConsoleAVL(other)
 {
 }
 
-ConsoleAVL& ConsoleAVL::operator=(ConsoleAVL &other)
-{
-	other.copy(this);
-    return *this;
-}
-
-ConsoleAVL& ConsoleAVL::operator=(ConsoleAVL &&other)
+BeautyCAVL& BeautyCAVL::operator=(BeautyCAVL &other)
 {
 	other.copy(this);
     return *this;
 }
 
-ConsoleAVL::~ConsoleAVL()
+BeautyCAVL& BeautyCAVL::operator=(BeautyCAVL &&other)
+{
+	other.copy(this);
+    return *this;
+}
+
+BeautyCAVL::~BeautyCAVL()
 {
 }
 
 //----------------/THE GREAT 6 ----------------------------
 //---------------  PROTECTED METHODS ----------------------
 
-void ConsoleAVL::draw_phase() const
+void BeautyCAVL::draw_phase() const
 {
 	makeVisit([](const AVLNode *node)
 				{
+                    for (int i = 0; i < node->height - 1; ++i)
+						cout << "----";
 					cout << "(" << node->key << ", " << node->value << "):["
 						 << node->height << "]" << endl;
 				});
@@ -52,9 +54,10 @@ void ConsoleAVL::draw_phase() const
 //--------------- /PROTECTED METHODS ----------------------
 //---------------  PUBLIC METHODS -------------------------
 
-void ConsoleAVL::draw() const
+void BeautyCAVL::draw() const
 {
 	draw_phase();
 }
 
 //--------------- /PUBLIC METHODS -------------------------
+

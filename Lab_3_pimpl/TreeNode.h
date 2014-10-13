@@ -5,7 +5,7 @@ struct AVLNode
 {
     AVLNode *left;
     AVLNode *right;
-    unsigned char height;
+    int height;
     int key;
     int value;
 

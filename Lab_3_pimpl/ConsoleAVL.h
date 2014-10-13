@@ -6,18 +6,17 @@
 class ConsoleAVL : public AVLTree
 {
 protected:
-    virtual int find_phase(int key) const;
+	void draw_phase() const;
 
 public:
     ConsoleAVL();
-    ConsoleAVL(ConsoleImpl *p);
     ConsoleAVL(ConsoleAVL &other);
     ConsoleAVL(ConsoleAVL &&other);
     ConsoleAVL& operator=(ConsoleAVL &other);
     ConsoleAVL& operator=(ConsoleAVL &&other);
     virtual ~ConsoleAVL();
 
-    void drawTree() const;
+    void draw() const;
 };
 
 #endif // CONSOLEAVL_H
