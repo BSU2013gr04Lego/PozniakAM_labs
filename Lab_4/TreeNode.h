@@ -10,14 +10,7 @@ struct AVLNode
     int value;
 
     // Constructor
-    AVLNode(int key, int val)
-    {
-        this->key = key;
-        this->value = val;
-        this->left = nullptr;
-        this->right = nullptr;
-        this->height = 1;
-    }
+    AVLNode(int key, int val);
 };
 
 #endif // TREENODE_H

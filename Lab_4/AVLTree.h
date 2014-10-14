@@ -7,8 +7,10 @@
 
 class AVLTree
 {
-protected:
     AVLImpl *pimpl;
+
+protected:
+   void makeVisit(void (*visitor)(const AVLNode *node)) const;
 
 public:
     AVLTree();
@@ -25,8 +27,6 @@ public:
     int find(int key) const;
     void copy(AVLTree *drain) const; // copy this within drain
     void clear();
-
-    void makeVisit(void (*visitor)(const AVLNode *node)) const;
 };
 
 #endif // AVLTREE_H

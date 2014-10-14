@@ -42,11 +42,13 @@ ConsoleAVL::~ConsoleAVL()
 
 void ConsoleAVL::draw_phase() const
 {
+	cout << "==============================================" << endl;
 	makeVisit([](const AVLNode *node)
 				{
 					cout << "(" << node->key << ", " << node->value << "):["
 						 << node->height << "]" << endl;
 				});
+	cout << "==============================================" << endl;
 }
 
 //--------------- /PROTECTED METHODS ----------------------

@@ -37,16 +37,12 @@ int main()
     new_tree.insert(55, 155);
     BeautyCAVL new_tree2(new_tree);
     new_tree2.remove(1);
-    cout << "==================//////==================" << endl;
     tree.clear();
     cout << tree.isEmpty() << endl;
     tree.draw();
-    cout << "============================================" << endl;
     new_tree.draw();
-    cout << "============================================" << endl;
     new_tree2.draw();
     cout << new_tree2.find(10) << " " << new_tree2.isEmpty() << endl;
-    cout << "============================================" << endl;
     new_tree2 = new_tree;
     new_tree2.draw();
     return 0;

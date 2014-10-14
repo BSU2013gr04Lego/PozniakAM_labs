@@ -42,6 +42,7 @@ BeautyCAVL::~BeautyCAVL()
 
 void BeautyCAVL::draw_phase() const
 {
+	cout << "==============================================" << endl;
 	makeVisit([](const AVLNode *node)
 				{
                     for (int i = 0; i < node->height - 1; ++i)
@@ -49,6 +50,7 @@ void BeautyCAVL::draw_phase() const
 					cout << "(" << node->key << ", " << node->value << "):["
 						 << node->height << "]" << endl;
 				});
+	cout << "==============================================" << endl;
 }
 
 //--------------- /PROTECTED METHODS ----------------------
