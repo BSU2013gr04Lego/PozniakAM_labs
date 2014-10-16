@@ -42,15 +42,13 @@ BeautyCAVL::~BeautyCAVL()
 
 void BeautyCAVL::draw_phase() const
 {
-	cout << "==============================================" << endl;
-	makeVisit([](const AVLNode *node)
-				{
-                    for (int i = 0; i < node->height - 1; ++i)
-						cout << "----";
-					cout << "(" << node->key << ", " << node->value << "):["
-						 << node->height << "]" << endl;
-				});
-	cout << "==============================================" << endl;
+    cout << "==============================================" << endl;
+    makeVisit([](int key, int val, std::string s)
+    {
+        cout << (s.length() ? (s.substr(0, s.length() - 4) + "|---") : "") << "(" << key
+             << ", " << val << ")" << endl;
+    });
+    cout << "==============================================" << endl;
 }
 
 //--------------- /PROTECTED METHODS ----------------------

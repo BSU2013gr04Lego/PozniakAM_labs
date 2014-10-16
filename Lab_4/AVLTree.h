@@ -2,16 +2,9 @@
 #define AVLTREE_H
 
 #include <string>
-#include "TreeNode.h"
-#include "AVLImpl.h"
 
 class AVLTree
 {
-    AVLImpl *pimpl;
-
-protected:
-   void makeVisit(void (*visitor)(const AVLNode *node)) const;
-
 public:
     AVLTree();
     AVLTree(const AVLTree &other);
@@ -27,6 +20,13 @@ public:
     int find(int key) const;
     void copy(AVLTree *drain) const; // copy this within drain
     void clear();
+
+protected:
+    void makeVisit(void (*visitor)(int key, int val, std::string s)) const;
+
+private:
+    class AVLImpl;
+    AVLImpl *pimpl;
 };
 
 #endif // AVLTREE_H

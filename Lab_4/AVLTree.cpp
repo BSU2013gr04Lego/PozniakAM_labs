@@ -2,15 +2,16 @@
 #include <exception>
 #include <iostream>
 #include <string>
-#include "AVLTree.h"
+#include "AVLImpl.h"
 
 using namespace std;
 
 //---------------- THE GREAT 6 ----------------------------
 
 AVLTree::AVLTree() :
-    pimpl(new AVLImpl)
+    pimpl(nullptr)
 {
+    pimpl = new AVLImpl();
 }
 
 AVLTree::AVLTree(const AVLTree &other)
@@ -77,7 +78,7 @@ void AVLTree::clear()
 }
 
 
-void AVLTree::makeVisit(void (*visitor)(const AVLNode *node)) const
+void AVLTree::makeVisit(void (*visitor)(int key, int val, std::string s)) const
 {
     pimpl->makeVisit(visitor);
 }

@@ -9,24 +9,24 @@ using namespace std;
 
 //---------------- THE GREAT 6 ----------------------------
 
-AVLImpl::AVLImpl() :
+AVLTree::AVLImpl::AVLImpl() :
     root(nullptr)
 {
 }
 
-AVLImpl::AVLImpl(const AVLImpl &other) :
+AVLTree::AVLImpl::AVLImpl(const AVLImpl &other) :
     root(nullptr)
 {
     other.copy(this);
 }
 
-AVLImpl::AVLImpl(AVLImpl &&other) :
+AVLTree::AVLImpl::AVLImpl(AVLImpl &&other) :
     root(nullptr)
 {
     swap (this->root, other.root);
 }
 
-AVLImpl& AVLImpl::operator=(const AVLImpl &other)
+AVLTree::AVLImpl& AVLTree::AVLImpl::operator=(const AVLImpl &other)
 {
     if (this != &other)
     {
@@ -35,13 +35,13 @@ AVLImpl& AVLImpl::operator=(const AVLImpl &other)
     return *this;
 }
 
-AVLImpl& AVLImpl::operator=(AVLImpl &&other)
+AVLTree::AVLImpl& AVLTree::AVLImpl::operator=(AVLImpl &&other)
 {
     swap (this->root, other.root);
     return *this;
 }
 
-AVLImpl::~AVLImpl()
+AVLTree::AVLImpl::~AVLImpl()
 {
     clear();
 }
@@ -49,19 +49,19 @@ AVLImpl::~AVLImpl()
 //--------------- /THE GREAT 6 ----------------------------
 //---------------  PRIVATE METHODS ------------------------
 
-int AVLImpl::height(const AVLNode *node) const
+int AVLTree::AVLImpl::height(const AVLNode *node) const
 {
     if (node)
         return node->height;
     return 0;
 }
 
-char AVLImpl::heightDiff(const AVLNode *node) const
+char AVLTree::AVLImpl::heightDiff(const AVLNode *node) const
 {
     return height(node->right) - height(node->left);
 }
 
-void AVLImpl::updateHeight(AVLNode *node)
+void AVLTree::AVLImpl::updateHeight(AVLNode *node)
 {
     int leftHeight = height(node->left);
     int rightHeight = height(node->right);
@@ -71,14 +71,14 @@ void AVLImpl::updateHeight(AVLNode *node)
         node->height = rightHeight + 1;
 }
 
-AVLNode* AVLImpl::findMin(AVLNode *node) const
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::findMin(AVLNode *node) const
 {
     if (node->left)
         return findMin(node->left);
     return node;
 }
 
-AVLNode* AVLImpl::rmMin(AVLNode *node)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::rmMin(AVLNode *node)
 {
     if (!(node->left))
         return node->right;
@@ -86,7 +86,7 @@ AVLNode* AVLImpl::rmMin(AVLNode *node)
     return balance(node);
 }
 
-AVLNode* AVLImpl::rotateL(AVLNode *node)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::rotateL(AVLNode *node)
 {
     AVLNode *nodeR = node->right;
     node->right = nodeR->left;
@@ -96,7 +96,7 @@ AVLNode* AVLImpl::rotateL(AVLNode *node)
     return nodeR;
 }
 
-AVLNode* AVLImpl::rotateR(AVLNode *node)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::rotateR(AVLNode *node)
 {
     AVLNode *nodeL = node->left;
     node->left = nodeL->right;
@@ -106,7 +106,7 @@ AVLNode* AVLImpl::rotateR(AVLNode *node)
     return nodeL;
 }
 
-AVLNode* AVLImpl::balance(AVLNode *node)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::balance(AVLNode *node)
 {
     updateHeight(node);
     if (heightDiff(node) == 2)
@@ -124,7 +124,7 @@ AVLNode* AVLImpl::balance(AVLNode *node)
     return node;
 }
 
-AVLNode* AVLImpl::ins(AVLNode *node, int key, int val)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::ins(AVLNode *node, int key, int val)
 {
     if (!node)
         return new AVLNode(key, val);
@@ -135,7 +135,7 @@ AVLNode* AVLImpl::ins(AVLNode *node, int key, int val)
     return balance(node);
 }
 
-AVLNode* AVLImpl::rmv(AVLNode *node, int key)
+AVLTree::AVLImpl::AVLNode* AVLTree::AVLImpl::rmv(AVLNode *node, int key)
 {
     if (!node)
         throw exception();
@@ -162,7 +162,7 @@ AVLNode* AVLImpl::rmv(AVLNode *node, int key)
     return balance(node);
 }
 
-void AVLImpl::cp(const AVLNode *node, AVLImpl *drain) const
+void AVLTree::AVLImpl::cp(const AVLNode *node, AVLImpl *drain) const
 {
     drain->insert(node->key, node->value);
     if (node->left)
@@ -171,36 +171,36 @@ void AVLImpl::cp(const AVLNode *node, AVLImpl *drain) const
         cp(node->right, drain);
 }
 
-void AVLImpl::mkVisit(void (*visitor)(const AVLNode *node), const AVLNode *node) const
+void AVLTree::AVLImpl::mkVisit(void (*visitor)(int key, int val, string s), const AVLNode *node, string s) const
 {
     if (node)
-		visitor(node);
+		visitor(node->key, node->value, s);
 	else
 		return;
-	mkVisit(visitor, node->left);
-	mkVisit(visitor, node->right);
+	mkVisit(visitor, node->left, s + "|   ");
+	mkVisit(visitor, node->right, s + "    ");
 }
 
 //--------------- /PRIVATE METHODS ------------------------
 //---------------  PUBLIC METHODS -------------------------
 
 // Binary tree methods
-bool AVLImpl::isEmpty() const
+bool AVLTree::AVLImpl::isEmpty() const
 {
 	return !root;
 }
 
-void AVLImpl::insert(int key, int val)
+void AVLTree::AVLImpl::insert(int key, int val)
 {
 	root = ins(root, key, val);
 }
 
-void AVLImpl::remove(int key)
+void AVLTree::AVLImpl::remove(int key)
 {
 	root = rmv(root, key);
 }
 
-int AVLImpl::find(int key) const
+int AVLTree::AVLImpl::find(int key) const
 {
     AVLNode *current = root;
     do
@@ -221,13 +221,13 @@ int AVLImpl::find(int key) const
     throw exception();
 }
 
-void AVLImpl::copy(AVLImpl *drain) const
+void AVLTree::AVLImpl::copy(AVLImpl *drain) const
 {
 	drain->clear();
 	cp(root, drain);
 }
 
-void AVLImpl::clear()
+void AVLTree::AVLImpl::clear()
 {
     while (root)
     {
@@ -235,9 +235,9 @@ void AVLImpl::clear()
     }
 }
 
-void AVLImpl::makeVisit(void (*visitor)(const AVLNode *node)) const		//public
+void AVLTree::AVLImpl::makeVisit(void (*visitor)(int key, int val, string s)) const		//public
 {
-	mkVisit(visitor, root);
+	mkVisit(visitor, root, "");
 }
 
 //--------------- /PUBLIC METHODS -------------------------

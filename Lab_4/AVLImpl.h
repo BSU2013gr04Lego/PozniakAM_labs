@@ -1,12 +1,29 @@
 #ifndef AVLIMPLE_H
 #define AVLIMPLE_H
 
-#include "TreeNode.h"
+#include "AVLTree.h"
 #include <string>
 
-class AVLImpl
+class AVLTree::AVLImpl
 {
-    AVLNode *root;
+    struct AVLNode
+    {
+        AVLNode *left;
+        AVLNode *right;
+        int height;
+        int key;
+        int value;
+
+        // Constructor
+        AVLNode(int key, int val)
+        {
+            this->key = key;
+            this->value = val;
+            this->left = nullptr;
+            this->right = nullptr;
+            this->height = 1;
+        }
+    } *root;
 
     int height(const AVLNode *node) const;
     char heightDiff(const AVLNode *node) const;
@@ -22,7 +39,7 @@ class AVLImpl
 	AVLNode* ins(AVLNode *node, int key, int val);
     AVLNode* rmv(AVLNode *node, int key);
 	void cp(const AVLNode *node, AVLImpl *drain) const;
-    void mkVisit(void (*visitor)(const AVLNode *node), const AVLNode *node) const;
+    void mkVisit(void (*visitor)(int key, int val, std::string s), const AVLNode *node, std::string s) const;
 
 public:
     AVLImpl();
@@ -39,7 +56,8 @@ public:
     void copy(AVLImpl *drain) const;
     void clear();
 
-    void makeVisit(void (*visitor)(const AVLNode *node)) const;
+    void makeVisit(void (*visitor)(int key, int val, std::string s)) const;
+
 };
 
 #endif // AVLIMPLE_H
