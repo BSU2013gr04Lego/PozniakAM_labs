@@ -16,6 +16,10 @@ class ScreenSaver : public QGLWidget
     Q_OBJECT
 public:
     explicit ScreenSaver(QWidget *parent = 0, double dx = SSAV_X_SPEED, double dy = SSAV_Y_SPEED, double dphi = SSAV_ANGLE_SPEED);
+    ScreenSaver(const ScreenSaver &other);
+    ScreenSaver(ScreenSaver &&other);
+    ScreenSaver& operator =(const ScreenSaver &other);
+    ScreenSaver& operator =(ScreenSaver &&other);
     virtual ~ScreenSaver();
 
     double getX() const;
@@ -34,6 +38,9 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+
+    void setWidth(int w);
+    void setHeight(int h);
 
 private:
     double m_dx;

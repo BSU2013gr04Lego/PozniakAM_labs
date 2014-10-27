@@ -11,6 +11,43 @@ SS_circles::SS_circles(QWidget *parent, double x_offset, double y_offset) :
     connect(this, SIGNAL(heightChanged(int)), SLOT(updateYOffset(int)));
 }
 
+SS_circles::SS_circles(const SS_circles &other) :
+    ScreenSaver(other)
+{
+    x_offset = other.x_offset;
+    y_offset = other.y_offset;
+}
+
+SS_circles::SS_circles(SS_circles &&other) :
+    ScreenSaver(other)
+{
+    x_offset = other.x_offset;
+    y_offset = other.y_offset;
+}
+
+SS_circles &SS_circles::operator =(const SS_circles &other)
+{
+    setDX(other.getDX());
+    setDY(other.getDY());
+    setDAngle(other.getAngle());
+    setX(other.getX());
+    setY(other.getY());
+    setAngle(other.getAngle());
+    setHeight(other.getHeight());
+    setWidth(other.getWidth());
+
+    x_offset = other.x_offset;
+    y_offset = other.y_offset;
+
+    return *this;
+}
+
+SS_circles &SS_circles::operator =(SS_circles &&other)
+{
+    std::swap(*this, *(new SS_circles(other)));
+    return *this;
+}
+
 SS_circles::~SS_circles()
 {
 }

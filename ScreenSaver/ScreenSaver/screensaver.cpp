@@ -15,6 +15,80 @@ ScreenSaver::ScreenSaver(QWidget *parent, double dx, double dy, double dphi) :
     m_timer->start(1);
 }
 
+ScreenSaver::ScreenSaver(const ScreenSaver &other) :
+    QGLWidget(other.parentWidget())
+{
+    this->m_dx = other.m_dx;
+    this->m_dy = other.m_dy;
+    this->m_dphi = other.m_dphi;
+    this->m_x = other.m_x;
+    this->m_y = other.m_y;
+    this->m_phi = other.m_phi;
+    this->m_height = other.m_height;
+    this->m_width = other.m_width;
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), SLOT(repaint()));
+    m_timer->start(1);
+}
+
+ScreenSaver::ScreenSaver(ScreenSaver &&other) :
+    QGLWidget(other.parentWidget())
+{
+    this->m_dx = std::move(other.m_dx);
+    this->m_dy = std::move(other.m_dy);
+    this->m_dphi = std::move(other.m_dphi);
+    this->m_x = std::move(other.m_x);
+    this->m_y = std::move(other.m_y);
+    this->m_phi = std::move(other.m_phi);
+    this->m_height = std::move(other.m_height);
+    this->m_width = std::move(other.m_width);
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), SLOT(repaint()));
+    m_timer->start(1);
+}
+
+ScreenSaver &ScreenSaver::operator =(const ScreenSaver &other)
+{
+    setParent(other.parentWidget());
+
+    this->m_dx = other.m_dx;
+    this->m_dy = other.m_dy;
+    this->m_dphi = other.m_dphi;
+    this->m_x = other.m_x;
+    this->m_y = other.m_y;
+    this->m_phi = other.m_phi;
+    this->m_height = other.m_height;
+    this->m_width = other.m_width;
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), SLOT(repaint()));
+    m_timer->start(1);
+
+    return *this;
+}
+
+ScreenSaver &ScreenSaver::operator =(ScreenSaver &&other)
+{
+    setParent(other.parentWidget());
+
+    std::swap(this->m_dx, other.m_dx);
+    std::swap(this->m_dy, other.m_dy);
+    std::swap(this->m_dphi, other.m_dphi);
+    std::swap(this->m_x, other.m_x);
+    std::swap(this->m_y, other.m_y);
+    std::swap(this->m_phi, other.m_phi);
+    std::swap(this->m_height, other.m_height);
+    std::swap(this->m_width, other.m_width);
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), SLOT(repaint()));
+    m_timer->start(1);
+
+    return *this;
+}
+
 ScreenSaver::~ScreenSaver()
 {
     delete m_timer;
@@ -90,6 +164,16 @@ int ScreenSaver::getHeight() const
     return m_height;
 }
 
+void ScreenSaver::setWidth(int w)
+{
+    m_width = w;
+}
+
+void ScreenSaver::setHeight(int h)
+{
+    m_height = h;
+}
+
 /*virtual*/ void ScreenSaver::initializeGL()
 {
     qglClearColor(Qt::black);
@@ -114,7 +198,7 @@ int ScreenSaver::getHeight() const
     double x_offset = getX();
     double y_offset = getY();
 
-    int n = 8;
+    int n = 64;
     glPointSize(2);
     glBegin(GL_POLYGON);
         glColor3f(1, 1, 1);

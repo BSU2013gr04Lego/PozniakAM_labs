@@ -9,6 +9,10 @@ class SS_boomerang : public ScreenSaver
     Q_OBJECT
 public:
     explicit SS_boomerang(QWidget *parent = 0);
+    SS_boomerang(const SS_boomerang &other);
+    SS_boomerang(SS_boomerang &&other);
+    SS_boomerang& operator =(const SS_boomerang &other);
+    SS_boomerang& operator =(SS_boomerang &&other);
     ~SS_boomerang();
 
 protected:

@@ -7,6 +7,36 @@ SS_triangle::SS_triangle(QWidget *parent) :
     setDY(SSAV_Y_SPEED / 6);
 }
 
+SS_triangle::SS_triangle(const SS_triangle &other) :
+    ScreenSaver(other)
+{
+}
+
+SS_triangle::SS_triangle(SS_triangle &&other) :
+    ScreenSaver(other)
+{
+}
+
+SS_triangle &SS_triangle::operator =(const SS_triangle &other)
+{
+    setDX(other.getDX());
+    setDY(other.getDY());
+    setDAngle(other.getAngle());
+    setX(other.getX());
+    setY(other.getY());
+    setAngle(other.getAngle());
+    setHeight(other.getHeight());
+    setWidth(other.getWidth());
+
+    return *this;
+}
+
+SS_triangle &SS_triangle::operator =(SS_triangle &&other)
+{
+    std::swap(*this, *(new SS_triangle(other)));
+    return *this;
+}
+
 SS_triangle::~SS_triangle()
 {
 }

@@ -16,6 +16,10 @@ private:
 
 public:
     explicit SS_circles(QWidget *parent = 0, double x_offset = SCIR_X_POSITION, double y_offset = SCIR_Y_POSITION);
+    SS_circles(const SS_circles &other);
+    SS_circles(SS_circles &&other);
+    SS_circles& operator =(const SS_circles &other);
+    SS_circles& operator =(SS_circles &&other);
     ~SS_circles();
 
     void setXOffset(int x);

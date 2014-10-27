@@ -5,6 +5,36 @@ SS_boomerang::SS_boomerang(QWidget *parent) :
 {
 }
 
+SS_boomerang::SS_boomerang(const SS_boomerang &other) :
+    ScreenSaver(other)
+{
+}
+
+SS_boomerang::SS_boomerang(SS_boomerang &&other) :
+    ScreenSaver(other)
+{
+}
+
+SS_boomerang &SS_boomerang::operator =(const SS_boomerang &other)
+{
+    setDX(other.getDX());
+    setDY(other.getDY());
+    setDAngle(other.getAngle());
+    setX(other.getX());
+    setY(other.getY());
+    setAngle(other.getAngle());
+    setHeight(other.getHeight());
+    setWidth(other.getWidth());
+
+    return *this;
+}
+
+SS_boomerang &SS_boomerang::operator =(SS_boomerang &&other)
+{
+    std::swap(*this, *(new SS_boomerang(other)));
+    return *this;
+}
+
 SS_boomerang::~SS_boomerang()
 {
 }
