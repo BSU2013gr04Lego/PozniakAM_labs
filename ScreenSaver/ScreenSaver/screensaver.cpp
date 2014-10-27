@@ -1,7 +1,7 @@
 #include "screensaver.h"
 #include <cmath>
 
-ScreenSaver::ScreenSaver(QWidget *parent, int dx, int dy, float dphi) :
+ScreenSaver::ScreenSaver(QWidget *parent, double dx, double dy, double dphi) :
     QGLWidget(parent)
 {
     resizeGL(1366, 768);
@@ -20,12 +20,12 @@ ScreenSaver::~ScreenSaver()
     delete m_timer;
 }
 
-int ScreenSaver::getX() const
+double ScreenSaver::getX() const
 {
     return m_x;
 }
 
-int ScreenSaver::getY() const
+double ScreenSaver::getY() const
 {
     return m_y;
 }
@@ -33,6 +33,51 @@ int ScreenSaver::getY() const
 double ScreenSaver::getAngle() const
 {
     return m_phi;
+}
+
+double ScreenSaver::getDX() const
+{
+    return m_dx;
+}
+
+double ScreenSaver::getDY() const
+{
+    return m_dy;
+}
+
+double ScreenSaver::getDAngle() const
+{
+    return m_dphi;
+}
+
+void ScreenSaver::setX(double x)
+{
+    m_x = x;
+}
+
+void ScreenSaver::setY(double y)
+{
+    m_y = y;
+}
+
+void ScreenSaver::setAngle(double phi)
+{
+    m_phi = phi;
+}
+
+void ScreenSaver::setDX(double dx)
+{
+    m_dx = dx;
+}
+
+void ScreenSaver::setDY(double dy)
+{
+    m_dy = dy;
+}
+
+void ScreenSaver::setDAngle(double dphi)
+{
+    m_dphi = dphi;
 }
 
 int ScreenSaver::getWidth() const
@@ -66,8 +111,8 @@ int ScreenSaver::getHeight() const
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    int x_offset = getX();
-    int y_offset = getY();
+    double x_offset = getX();
+    double y_offset = getY();
 
     int n = 8;
     glPointSize(2);
@@ -76,8 +121,8 @@ int ScreenSaver::getHeight() const
         for (int i = 0; i < n; ++i)
         {
             double angle = 2 * 3.14 * i / n;
-            int x = (int)(cos(angle) * 40 + x_offset);
-            int y = (int)(sin(angle) * 40 + y_offset);
+            double x = (cos(angle) * 40 + x_offset);
+            double y = (sin(angle) * 40 + y_offset);
             glVertex2d(x, y);
         }
     glEnd();
@@ -96,7 +141,41 @@ int ScreenSaver::getHeight() const
     */
 }
 
-void ScreenSaver::SlotMoveForward()
+/*virtual*/ void ScreenSaver::mousePressEvent(QMouseEvent *event)
+{
+    m_dx = 0;
+    m_dy = 0;
+    prev_mouse_x = event->globalX();
+    prev_mouse_y = event->globalY();
+}
+
+/*virtual*/ void ScreenSaver::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_dx = (event->globalX() - prev_mouse_x) / 50;
+    m_dy = (event->globalY() - prev_mouse_y) / 50;
+}
+
+void ScreenSaver::setPrevMouseX(double x)
+{
+    prev_mouse_x = x;
+}
+
+void ScreenSaver::setPrevMouseY(double y)
+{
+    prev_mouse_y = y;
+}
+
+double ScreenSaver::getPrevMouseX() const
+{
+    return prev_mouse_x;
+}
+
+double ScreenSaver::getPrevMouseY() const
+{
+    return prev_mouse_y;
+}
+
+/*virtual*/ void ScreenSaver::SlotMoveForward()
 {
     if (m_x + m_dx > m_width || m_x + m_dx < 0)
         m_dx = -m_dx;
@@ -107,11 +186,11 @@ void ScreenSaver::SlotMoveForward()
     m_y += m_dy;
 
     if (m_phi + m_dphi > 4000 * M_PI)
-        m_phi -= 3998 * M_PI;
+        m_phi -= 2000 * M_PI;
     m_phi += m_dphi;
 }
 
-void ScreenSaver::SlotMoveBack()
+/*virtual*/ void ScreenSaver::SlotMoveBack()
 {
     if (m_x - m_dx > m_width || m_x - m_dx < 0)
         m_dx = -m_dx;
@@ -122,7 +201,7 @@ void ScreenSaver::SlotMoveBack()
     m_y -= m_dy;
 
     if (m_phi - m_dphi < 2 * M_PI)
-        m_phi += 2 * M_PI;
+        m_phi += 2000 * M_PI;
     m_phi -= m_dphi;
 }
 

@@ -3,6 +3,8 @@
 SS_triangle::SS_triangle(QWidget *parent) :
     ScreenSaver(parent)
 {
+    setDX(SSAV_X_SPEED / 3.14);
+    setDY(SSAV_Y_SPEED / 6);
 }
 
 SS_triangle::~SS_triangle()
@@ -13,8 +15,8 @@ SS_triangle::~SS_triangle()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    int x_offset = getX();
-    int y_offset = getY();
+    double x_offset = getX();
+    double y_offset = getY();
     double phi_offset = getAngle();
 
     int n = 3;
@@ -24,8 +26,8 @@ SS_triangle::~SS_triangle()
         for (int i = 0; i < n; ++i)
         {
             double angle = 2 * M_PI * i / n;
-            int x = (int)(cos(angle + phi_offset) * 40 + x_offset);
-            int y = (int)(sin(angle + phi_offset) * 40 + y_offset);
+            double x = (cos(angle + phi_offset) * 40 + x_offset);
+            double y = (sin(angle + phi_offset) * 40 + y_offset);
             glVertex2d(x, y);
         }
     glEnd();

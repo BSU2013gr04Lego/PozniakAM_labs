@@ -16,10 +16,14 @@ SOURCES += main.cpp\
     screensaver.cpp \
     ss_triangle.cpp \
     ss_circles.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    ss_container.cpp \
+    ss_boomerang.cpp
 
 HEADERS  += \
     screensaver.h \
     ss_triangle.h \
     ss_circles.h \
-    mainwindow.h
+    mainwindow.h \
+    ss_container.h \
+    ss_boomerang.h

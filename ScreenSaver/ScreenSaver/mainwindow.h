@@ -2,20 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QScrollArea>
-#include "screensaver.h"
-#include "ss_circles.h"
-#include "ss_triangle.h"
-
-#define WIDGETS_COUNT 6
+#include "ss_container.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    ScreenSaver** ssavers;
+    SS_container *m_wdgtCont;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
