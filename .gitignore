@@ -8,5 +8,6 @@ obj/
 *.cbp
 *.save
 *user*
+*_old*
 Lab_3/Qt/build*
 ScreenSaver/build*
