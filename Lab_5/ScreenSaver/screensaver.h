@@ -70,39 +70,7 @@ protected:
     void setPrevMouseX(double x);
     void setPrevMouseY(double y);
     double getPrevMouseX() const;
-    double getPrevMouseY() const;/*virtual*/ void ScreenSaver::paintGL()
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        double x_offset = getX();
-        double y_offset = getY();
-
-        int n = 64;
-        glPointSize(2);
-        glBegin(GL_POLYGON);
-            glColor3f(1, 1, 1);
-            for (int i = 0; i < n; ++i)
-            {
-                double angle = 2 * 3.14 * i / n;
-                double x = (cos(angle) * 40 + x_offset);
-                double y = (sin(angle) * 40 + y_offset);
-                glVertex2d(x, y);
-            }
-        glEnd();
-
-        /*
-        glBegin(GL_QUADS);
-        glColor3f(1, 0.33, 0.66);
-        glVertex2f(0, 100);
-        glColor3f(0, 1, 0.17);
-        glVertex2f(100, 100);
-        glColor3f(1, 0, 1);
-        glVertex2f(100, 0);
-        glColor3f(0, 0, 0);
-        glVertex2f(0, 0);
-        glEnd();
-        */
-    }
+    double getPrevMouseY() const;
 
 signals:
     void widthChanged(int);
