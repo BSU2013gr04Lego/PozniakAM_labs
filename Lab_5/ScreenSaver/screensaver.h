@@ -11,6 +11,8 @@
 #define SSAV_Y_SPEED 1.77
 #define SSAV_ANGLE_SPEED 0.01
 
+#define M_PI 3.14159265358979323846
+
 class ScreenSaver : public QGLWidget
 {
     Q_OBJECT
