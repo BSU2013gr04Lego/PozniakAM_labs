@@ -6,4 +6,4 @@
 |2  |АВЛ дерево   |
 |3  |pimpl        |
 |4  |NVI          |
-|5  |Polymorphizm |
+|5  |Polymorphism |
