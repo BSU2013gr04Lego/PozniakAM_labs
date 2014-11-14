@@ -1,15 +1,16 @@
 #include <iostream>
+#include <string>
 #include "AVLTree.h"
 
 using namespace std;
 
 int main()
 {
-    AVLTree tree, new_tree;
+    AVLTree<int, string> tree, new_tree;
 
     for (int i = 0; i < 40; ++i)
     {
-        tree.insert(i, i * 10);
+        tree.insert(i, "Leaf");
     }
 
     /*
