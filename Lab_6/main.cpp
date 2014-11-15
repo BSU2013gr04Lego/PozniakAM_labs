@@ -11,26 +11,28 @@ int main()
     for (int i = 0; i < 40; ++i)
     {
         tree.insert(i, "Leaf");
+        cout << "**************************" << endl;
+        tree.drawTree();
     }
 
-    /*
-    tree.insert(2, 10);
+
+    tree.insert(2, "BEAR");
     tree.drawTree();
     cout << "=================" << endl;
-    tree.insert(1, 20);
+    tree.insert(1, "APPLE");
     tree.drawTree();
     cout << "=================" << endl;
-    tree.insert(0, 30);
+    tree.insert(0, "TREE");
     tree.drawTree();
     cout << "=================" << endl;
-    tree.insert(3, 40);
+    tree.insert(3, "BATMAN");
     tree.drawTree();
     cout << "=================" << endl;
     tree.remove(3);
     tree.drawTree();
     cout << "=================" << endl;
     tree.remove(2);
-    */
+
     tree.drawTree();
     cout << "=================" << endl;
 

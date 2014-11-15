@@ -8,40 +8,46 @@
 
 template <typename K, typename V> struct AVLNode
 {
-    AVLNode<K, V> *left;
-    AVLNode<K, V> *right;
+    typedef AVLNode<K, V> Node;
+
+    Node *left;
+    Node *right;
+    Node *parent;
     unsigned char height;
     K key;
     V value;
 
     // Constructor
-    AVLNode(K key, V val)
+    AVLNode(K key, V val, Node *parent = nullptr)
     {
         this->key = key;
         this->value = val;
         this->left = nullptr;
         this->right = nullptr;
+        this->parent = parent;
         this->height = 1;
     }
 };
 
 template <typename K, typename V> class AVLTree
 {
-    AVLNode<K, V> *root;
+    typedef AVLNode<K, V> Node;
 
-    unsigned char height(AVLNode<K, V> *node) const
+    Node *root;
+
+    unsigned char height(Node *node) const
     {
         if (node)
             return node->height;
         return 0;
     }
 
-    char heightDiff(AVLNode<K, V> *node) const
+    char heightDiff(Node *node) const
     {
         return height(node->right) - height(node->left);
     }
 
-    void updateHeight(AVLNode<K, V> *node)
+    void updateHeight(Node *node)
     {
         unsigned char leftHeight = height(node->left);
         unsigned char rightHeight = height(node->right);
@@ -51,18 +57,18 @@ template <typename K, typename V> class AVLTree
             node->height = rightHeight + 1;
     }
 
-    AVLNode<K, V>* ins(AVLNode<K, V> *node, K key, V val)
+    Node* ins(Node *node, K key, V val, Node *parent = nullptr)
     {
         if (!node)
-            return new AVLNode<K, V>(key, val);
+            return new Node(key, val, parent);
         if (key < node->key)
-            node->left = ins(node->left, key, val);
-        else
-            node->right = ins(node->right, key, val);
+            node->left = ins(node->left, key, val, node);
+        else // key >= node->key
+            node->right = ins(node->right, key, val, node);
         return balance(node);
     }
 
-    AVLNode<K, V>* rmv(AVLNode<K, V> *node, K key)
+    Node* rmv(Node *node, K key)
     {
         if (!node)
             return nullptr;
@@ -74,57 +80,94 @@ template <typename K, typename V> class AVLTree
         {
             node->right = rmv(node->right, key);
         }
-        else
+        else // key == node->key
         {
-            AVLNode<K, V> *left = node->left;
-            AVLNode<K, V> *right = node->right;
+            Node *left = node->left;
+            Node *right = node->right;
+            Node *parent = node->parent;
             delete node;
             if (!right)
+            {
+                if (left)
+                    left->parent = parent;
                 return left;
-            AVLNode<K, V> *min = findMin(right);
+            }
+            Node *min = findMin(right);
+            if (min)
+                min->parent = parent;
+
             min->right = rmMin(right);
+            if (min->right)
+                min->right->parent = min;
+
             min->left = left;
+            if (min->left)
+                min->left->parent = min;
             return balance(min);
         }
         return balance(node);
     }
 
-    AVLNode<K, V>* findMin(AVLNode<K, V> *node) const
+    Node* findMin(Node *node) const
     {
         if (node->left)
             return findMin(node->left);
         return node;
     }
 
-    AVLNode<K, V>* rmMin(AVLNode<K, V> *node)
+    Node* rmMin(Node *node)
     {
         if (!(node->left))
+        {
+            if (node->right)
+                node->right->parent = node->parent;
             return node->right;
+        }
         node->left = rmMin(node->left);
         return balance(node);
     }
 
-    AVLNode<K, V>* rotateL(AVLNode<K, V> *node)
+    Node* rotateL(Node *node)
     {
-        AVLNode<K, V> *nodeR = node->right;
+        Node *parent = node->parent;
+        Node *nodeR = node->right;
+        if (nodeR)
+            nodeR->parent = parent;
+
         node->right = nodeR->left;
+        if (node->right)
+            node->right->parent = node;
+
         nodeR->left = node;
+        if (node->left)
+            nodeR->left->parent = nodeR;
+
         updateHeight(nodeR->left);
         updateHeight(nodeR);
         return nodeR;
     }
 
-    AVLNode<K, V>* rotateR(AVLNode<K, V> *node)
+    Node* rotateR(Node *node)
     {
-        AVLNode<K, V> *nodeL = node->left;
+        Node *parent = node->parent;
+        Node *nodeL = node->left;
+        if (nodeL)
+            nodeL->parent = parent;
+
         node->left = nodeL->right;
+        if (node->left)
+            node->left->parent = node;
+
         nodeL->right = node;
+        if (node->right)
+            nodeL->right->parent = nodeL;
+
         updateHeight(nodeL->right);
         updateHeight(nodeL);
         return nodeL;
     }
 
-    AVLNode<K, V>* balance(AVLNode<K, V> *node)
+    Node* balance(Node *node)
     {
         updateHeight(node);
         if (heightDiff(node) == 2)
@@ -142,7 +185,7 @@ template <typename K, typename V> class AVLTree
         return node;
     }
 
-    void draw(AVLNode<K, V> *node, std::string s) const
+    void draw(Node *node, std::string s) const
     {
         if (node)
         {
@@ -153,7 +196,7 @@ template <typename K, typename V> class AVLTree
         }
     }
 
-    void cpy(const AVLNode<K, V> *node, AVLTree<K, V> *drain) const
+    void cpy(const Node *node, AVLTree<K, V> *drain) const
     {
         drain->insert(node->key, node->value);
         if (node->left)
@@ -218,7 +261,7 @@ public:
 
     int find(K key) const
     {
-        AVLNode<K, V> *current = root;
+        Node *current = root;
         if (!current)
         {
             throw std::exception();
