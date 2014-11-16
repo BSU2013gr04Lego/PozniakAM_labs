@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "iterator.h"
+
 template <typename K, typename V> struct AVLNode
 {
     typedef AVLNode<K, V> Node;
@@ -27,11 +29,23 @@ template <typename K, typename V> struct AVLNode
         this->parent = parent;
         this->height = 1;
     }
+
+    V get() const
+    {
+        return value;
+    }
 };
 
 template <typename K, typename V> class AVLTree
 {
+private:
     typedef AVLNode<K, V> Node;
+
+public:
+    typedef Iterator_implementation<Node, AVLTree<K, V>, V> Iterator;
+
+private:
+    friend Iterator;
 
     Node *root;
 
@@ -63,8 +77,13 @@ template <typename K, typename V> class AVLTree
             return new Node(key, val, parent);
         if (key < node->key)
             node->left = ins(node->left, key, val, node);
-        else // key >= node->key
+        else if (key > node->key)
             node->right = ins(node->right, key, val, node);
+        else // key == node->key
+        {
+            node->key = key;
+            node->value = val;
+        }
         return balance(node);
     }
 
@@ -205,6 +224,8 @@ template <typename K, typename V> class AVLTree
             cpy(node->right, drain);
     }
 
+    // Iterator methods
+
 public:
     AVLTree() : root(nullptr)
     {
@@ -295,6 +316,21 @@ public:
         {
             remove(root->key);
         }
+    }
+
+    // Iterator methods
+
+    Iterator begin() const
+    {
+        Node *node = root;
+        while (node->left)
+            node = node->left;
+        return Iterator(this, node);
+    }
+
+    Iterator end() const
+    {
+        return Iterator(this, nullptr);
     }
 
     // Debug methods
