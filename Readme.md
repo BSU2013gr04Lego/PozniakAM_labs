@@ -7,3 +7,4 @@
 |3  |pimpl        |
 |4  |NVI          |
 |5  |Polymorphism |
+|6  |Iterator     |
