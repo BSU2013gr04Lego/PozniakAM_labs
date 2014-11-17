@@ -12,11 +12,9 @@ int main()
 
     for (int i = 0; i < 40; ++i)
     {
-        tree.insert(i, 1);
-        cout << "**************************" << endl;
-        tree.drawTree();
+        tree.insert(i, i);
     }
-
+/*
     tree.insert(2, 1);
     tree.insert(2, 2);
     tree.insert(2, 3);
@@ -35,7 +33,8 @@ int main()
     tree.drawTree();
     cout << "=================" << endl;
     tree.remove(2);
-
+*/
+    cout << "**************************" << endl;
     tree.drawTree();
     cout << "=========Iterator========" << endl;
 

@@ -158,7 +158,7 @@ private:
             node->right->parent = node;
 
         nodeR->left = node;
-        if (node->left)
+        if (nodeR->left)
             nodeR->left->parent = nodeR;
 
         updateHeight(nodeR->left);
@@ -178,7 +178,7 @@ private:
             node->left->parent = node;
 
         nodeL->right = node;
-        if (node->right)
+        if (nodeL->right)
             nodeL->right->parent = nodeL;
 
         updateHeight(nodeL->right);

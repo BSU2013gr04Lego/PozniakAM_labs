@@ -56,6 +56,7 @@ public:
             node_ptr = node_ptr->right;
             while (node_ptr->left)
                 node_ptr = node_ptr->left;
+            return;
         } else
         {
             while (node_ptr->parent)
