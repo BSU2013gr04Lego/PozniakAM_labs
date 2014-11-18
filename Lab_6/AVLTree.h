@@ -288,14 +288,20 @@ public:
     void insert(K key, V val)
     {
         if (isThere(key))
-            throw new Insert_AVLException;
+        {
+            Insert_AVLException err;
+            throw err;
+        }
         root = ins(root, key, val);
     }
 
     void remove(K key)
     {
         if (!isThere(key))
-            throw new Remove_AVLException;
+        {
+            Remove_AVLException err;
+            throw err;
+        }
         root = rmv(root, key);
     }
 
@@ -303,7 +309,10 @@ public:
     {
         Node *current = root;
         if (!current)
-            throw new Find_AVLException;
+        {
+            Find_AVLException err;
+            throw err;
+        }
         while (current->key != key)
         {
             if (key < current->key)
@@ -311,7 +320,10 @@ public:
             else if (key > current->key)
                 current = current->right;
             if (!current)
-                throw new Find_AVLException;
+            {
+                Find_AVLException err;
+                throw err;
+            }
         }
         return current->value;
     }

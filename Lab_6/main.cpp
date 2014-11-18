@@ -10,7 +10,7 @@ int main()
 
     AVLTree tree, new_tree;
 
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 40; ++i)
     {
         tree.insert(i, i);
     }
@@ -34,6 +34,9 @@ int main()
     cout << "=================" << endl;
     tree.remove(2);
 */
+
+    tree.remove(3);
+    tree.remove(2);
     cout << "**************************" << endl;
     tree.drawTree();
     cout << "=========Iterator========" << endl;
@@ -44,5 +47,3 @@ int main()
     }
     return 0;
 }
-
-// TODO у вас у гэтай дэрэкторыі не заліты файл AVLnode.h
