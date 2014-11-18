@@ -10,7 +10,7 @@ int main()
 
     AVLTree tree, new_tree;
 
-    for (int i = 0; i < 40; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         tree.insert(i, i);
     }

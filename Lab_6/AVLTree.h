@@ -7,6 +7,7 @@
 #include <string>
 
 #include "iterator.h"
+#include "Exceptions.h"
 
 template <typename K, typename V> struct AVLNode
 {
@@ -28,11 +29,6 @@ template <typename K, typename V> struct AVLNode
         this->right = nullptr;
         this->parent = parent;
         this->height = 1;
-    }
-
-    V get() const
-    {
-        return value;
     }
 };
 
@@ -224,6 +220,25 @@ private:
             cpy(node->right, drain);
     }
 
+    bool isThere(K key)
+    {
+        Node *current = root;
+        if (!current)
+        {
+            return false;
+        }
+        while (current->key != key)
+        {
+            if (key < current->key)
+                current = current->left;
+            else if (key > current->key)
+                current = current->right;
+            if (!current)
+                return false;
+        }
+        return true;
+    }
+
     // Iterator methods
 
 public:
@@ -272,11 +287,15 @@ public:
 
     void insert(K key, V val)
     {
+        if (isThere(key))
+            throw new Insert_AVLException;
         root = ins(root, key, val);
     }
 
     void remove(K key)
     {
+        if (!isThere(key))
+            throw new Remove_AVLException;
         root = rmv(root, key);
     }
 
@@ -284,24 +303,17 @@ public:
     {
         Node *current = root;
         if (!current)
-        {
-            throw std::exception();
-        }
+            throw new Find_AVLException;
         while (current->key != key)
         {
             if (key < current->key)
-            {
                 current = current->left;
-            }
-            if (key > current->key)
-            {
+            else if (key > current->key)
                 current = current->right;
-            }
-            if (key == current->key)
-            {
-                return current->value;
-            }
+            if (!current)
+                throw new Find_AVLException;
         }
+        return current->value;
     }
 
     void copy(AVLTree<K, V> *drain) const
