@@ -9,7 +9,8 @@
 #include "iterator.h"
 #include "Exceptions.h"
 
-template <typename K, typename V> struct AVLNode
+template <typename K, typename V>
+struct AVLNode
 {
     typedef AVLNode<K, V> Node;
 
@@ -32,7 +33,8 @@ template <typename K, typename V> struct AVLNode
     }
 };
 
-template <typename K, typename V> class AVLTree
+template <typename K, typename V>
+class AVLTree
 {
 private:
     typedef AVLNode<K, V> Node;
@@ -289,8 +291,7 @@ public:
     {
         if (isThere(key))
         {
-            Insert_AVLException err;
-            throw err;
+            throw Insert_AVLException();
         }
         root = ins(root, key, val);
     }
@@ -299,8 +300,7 @@ public:
     {
         if (!isThere(key))
         {
-            Remove_AVLException err;
-            throw err;
+            throw Remove_AVLException();
         }
         root = rmv(root, key);
     }
@@ -310,8 +310,7 @@ public:
         Node *current = root;
         if (!current)
         {
-            Find_AVLException err;
-            throw err;
+            throw Find_AVLException();
         }
         while (current->key != key)
         {
@@ -321,8 +320,7 @@ public:
                 current = current->right;
             if (!current)
             {
-                Find_AVLException err;
-                throw err;
+                throw Find_AVLException();
             }
         }
         return current->value;
