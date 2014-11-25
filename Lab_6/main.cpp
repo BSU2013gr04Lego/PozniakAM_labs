@@ -9,8 +9,7 @@ int main()
 {
     typedef AVLTree<int, int> AVLTree;
 
-    AVLTree AVL;
-    SmartPointer<AVLTree> tree(&AVL);
+    SmartPointer<AVLTree> tree(new AVLTree);
 
     cout << endl << "******* BASIC SECTION *******" << endl;
     for (int i = 0; i < 40; ++i)
@@ -52,18 +51,10 @@ int main()
         tree->insert(3, 42);
     } catch (const exception& e)
     {
-        AVL = safe;
+        *(tree) = safe;
         cerr << e.what() << endl;
     }
-    cout << endl << "******* SMART SECTION *******" << endl;
-    /*
-    SmartPointer<AVLTree> smart_1 = tree;
-    SmartPointer<AVLTree> smart_2 = tree;
-    SmartPointer<AVLTree> smart_3 = tree;
-    delete &smart_2;
-    delete &smart_3;
-    delete &smart_1;
-    */
+
     cout << endl << "******* COUT SECTION ********" << endl;
     tree->drawTree();
     cout << endl << "***** ITERATOR SECTION ******" << endl;
