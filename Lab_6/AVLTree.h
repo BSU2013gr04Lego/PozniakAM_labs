@@ -8,26 +8,43 @@
 
 #include "iterator.h"
 #include "Exceptions.h"
+#include "SmartPointer.h"
 
 template <typename K, typename V>
 struct AVLNode
 {
-    typedef AVLNode<K, V> Node;
+    typedef AVLNode<K, V> Tree_node;
+    typedef SmartPointer<Tree_node> Node;
 
-    Node *left;
-    Node *right;
-    Node *parent;
+    Node left;
+    Node right;
+    Node parent;
     unsigned char height;
     K key;
     V value;
 
+    bool hasLeft()
+    {
+        return left.isNullptr();
+    }
+
+    bool hasRight()
+    {
+        return right.isNullptr();
+    }
+
+    bool hasParent()
+    {
+        return parent.isNullptr();
+    }
+
     // Constructor
-    AVLNode(K key, V val, Node *parent = nullptr)
+    AVLNode(K key, V val, Node parent = Node(nullptr))
     {
         this->key = key;
         this->value = val;
-        this->left = nullptr;
-        this->right = nullptr;
+        this->left = Node(nullptr);
+        this->right = Node(nullptr);
         this->parent = parent;
         this->height = 1;
     }
@@ -37,29 +54,30 @@ template <typename K, typename V>
 class AVLTree
 {
 private:
-    typedef AVLNode<K, V> Node;
+    typedef AVLNode<K, V> Tree_node;
+    typedef SmartPointer<Tree_node> Node;
 
 public:
-    typedef Iterator_implementation<Node, AVLTree<K, V>, V> Iterator;
+    typedef Iterator_implementation<SmartPointer<Tree_node>, AVLTree<K, V>, V> Iterator;
 
 private:
     friend Iterator;
 
-    Node *root;
+    Node root;
 
-    unsigned char height(Node *node) const
+    unsigned char height(Node node) const
     {
-        if (node)
+        if (!(node== Node()))
             return node->height;
         return 0;
     }
 
-    char heightDiff(Node *node) const
+    char heightDiff(Node node) const
     {
         return height(node->right) - height(node->left);
     }
 
-    void updateHeight(Node *node)
+    void updateHeight(Node node)
     {
         unsigned char leftHeight = height(node->left);
         unsigned char rightHeight = height(node->right);
@@ -69,10 +87,10 @@ private:
             node->height = rightHeight + 1;
     }
 
-    Node* ins(Node *node, K key, V val, Node *parent = nullptr)
+    Node ins(Node node, K key, V val, Node parent = nullptr)
     {
-        if (!node)
-            return new Node(key, val, parent);
+        if (node == Node())
+            return Node(new Tree_node(key, val, parent));
         if (key < node->key)
             node->left = ins(node->left, key, val, node);
         else if (key > node->key)
@@ -85,9 +103,9 @@ private:
         return balance(node);
     }
 
-    Node* rmv(Node *node, K key)
+    Node rmv(Node node, K key)
     {
-        if (!node)
+        if (node == Node())
             return nullptr;
         if (key < node->key)
         {
@@ -99,44 +117,43 @@ private:
         }
         else // key == node->key
         {
-            Node *left = node->left;
-            Node *right = node->right;
-            Node *parent = node->parent;
-            delete node;
-            if (!right)
+            Node left = node->left;
+            Node right = node->right;
+            Node parent = node->parent;
+            if (right == Node())
             {
-                if (left)
+                if (!(left == Node()))
                     left->parent = parent;
                 return left;
             }
-            Node *min = findMin(right);
-            if (min)
+            Node min = findMin(right);
+            if (!(min == Node()))
                 min->parent = parent;
 
             min->right = rmMin(right);
-            if (min->right)
+            if (!(min->right == Node()))
                 min->right->parent = min;
 
             min->left = left;
-            if (min->left)
+            if (!(min->left == Node()))
                 min->left->parent = min;
             return balance(min);
         }
         return balance(node);
     }
 
-    Node* findMin(Node *node) const
+    Node findMin(Node node) const
     {
-        if (node->left)
+        if (!(node->left == Node()))
             return findMin(node->left);
         return node;
     }
 
-    Node* rmMin(Node *node)
+    Node rmMin(Node node)
     {
-        if (!(node->left))
+        if (node->left == Node())
         {
-            if (node->right)
+            if (!(node->right == Node()))
                 node->right->parent = node->parent;
             return node->right;
         }
@@ -144,19 +161,19 @@ private:
         return balance(node);
     }
 
-    Node* rotateL(Node *node)
+    Node rotateL(Node node)
     {
-        Node *parent = node->parent;
-        Node *nodeR = node->right;
-        if (nodeR)
+        Node parent = node->parent;
+        Node nodeR = node->right;
+        if (!(nodeR == Node()))
             nodeR->parent = parent;
 
         node->right = nodeR->left;
-        if (node->right)
+        if (!(node->right == Node()))
             node->right->parent = node;
 
         nodeR->left = node;
-        if (nodeR->left)
+        if (!(nodeR->left == Node()))
             nodeR->left->parent = nodeR;
 
         updateHeight(nodeR->left);
@@ -164,19 +181,19 @@ private:
         return nodeR;
     }
 
-    Node* rotateR(Node *node)
+    Node rotateR(Node node)
     {
-        Node *parent = node->parent;
-        Node *nodeL = node->left;
-        if (nodeL)
+        Node parent = node->parent;
+        Node nodeL = node->left;
+        if (!(nodeL == Node()))
             nodeL->parent = parent;
 
         node->left = nodeL->right;
-        if (node->left)
+        if (!(node->left == Node()))
             node->left->parent = node;
 
         nodeL->right = node;
-        if (nodeL->right)
+        if (!(nodeL->right == Node()))
             nodeL->right->parent = nodeL;
 
         updateHeight(nodeL->right);
@@ -184,7 +201,7 @@ private:
         return nodeL;
     }
 
-    Node* balance(Node *node)
+    Node balance(Node node)
     {
         updateHeight(node);
         if (heightDiff(node) == 2)
@@ -202,30 +219,30 @@ private:
         return node;
     }
 
-    void draw(Node *node, std::string s) const
+    void draw(Node node, std::string s) const
     {
-        if (node)
+        if (!(node == Node()))
         {
             std::cout << (s.length() ? (s.substr(0, s.length() - 4) + "|---") : "")
-                 << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << std::endl;
+                      << "(" << node->key << ", " << node->value << "):[" << (int)node->height << "]" << std::endl;
             draw(node->right, s + "|   ");
             draw(node->left, s + "    ");
         }
     }
 
-    void cpy(const Node *node, AVLTree<K, V> *drain) const
+    void cpy(const Node node, AVLTree<K, V> *drain) const
     {
         drain->insert(node->key, node->value);
-        if (node->left)
+        if (!(node->left == Node()))
             cpy(node->left, drain);
-        if (node->right)
+        if (!(node->right == Node()))
             cpy(node->right, drain);
     }
 
     bool isThere(K key)
     {
-        Node *current = root;
-        if (!current)
+        Node current = root;
+        if (current == Node())
         {
             return false;
         }
@@ -235,7 +252,7 @@ private:
                 current = current->left;
             else if (key > current->key)
                 current = current->right;
-            if (!current)
+            if (current == Node())
                 return false;
         }
         return true;
@@ -284,7 +301,7 @@ public:
     // Binary tree methods
     bool isEmpty() const
     {
-        return !root;
+        return root == Node();
     }
 
     void insert(K key, V val)
@@ -344,8 +361,8 @@ public:
 
     Iterator begin() const
     {
-        Node *node = root;
-        while (node->left)
+        Node node = root;
+        while (node->hasLeft())
             node = node->left;
         return Iterator(this, node);
     }

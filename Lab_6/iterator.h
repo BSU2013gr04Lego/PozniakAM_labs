@@ -6,10 +6,10 @@ class Iterator_implementation
 {
     friend Tree;
 
-    Node* node_ptr;
+    Node node_ptr;
     const Tree* parent;
 
-    Iterator_implementation(const Tree *parent, Node *node) :
+    Iterator_implementation(const Tree *parent, Node node) :
         parent(parent),
         node_ptr(node)
     {
@@ -51,17 +51,18 @@ public:
 
     void operator++()
     {
-        if (node_ptr->right)
+        if (node_ptr->hasRight())
         {
             node_ptr = node_ptr->right;
-            while (node_ptr->left)
+            while (node_ptr->hasLeft())
                 node_ptr = node_ptr->left;
             return;
-        } else
+        }
+        else
         {
-            while (node_ptr->parent)
+            while (node_ptr->hasParent())
             {
-                if (node_ptr == node_ptr->parent->right)
+                if (node_ptr == node_ptr->parent->right) // TODO operator ==
                     node_ptr = node_ptr->parent;
                 else
                 {

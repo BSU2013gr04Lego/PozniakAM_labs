@@ -18,7 +18,7 @@ public:
     SmartPointer(T *obj) :
         obj(obj)
     {
-        count = new int;
+        count = new int();
         (*count)++;
     }
 
@@ -38,24 +38,35 @@ public:
 
     ~SmartPointer()
     {
-        (*count)--;
-        if (*count < 1)
+        if (count)
         {
-            delete obj;
-            delete count;
+            (*count)--;
+            if (*count < 1)
+            {
+                delete obj;
+                delete count;
+            }
         }
-        obj = nullptr;
-        count = nullptr;
     }
 
-    T* operator->()
+    T* operator->() const
     {
         return obj;
     }
 
-    T& operator*()
+    T& operator*() const
     {
         return *obj;
+    }
+
+    bool operator==(const SmartPointer& spointer) const
+    {
+        return this->obj == spointer.obj;
+    }
+
+    bool isNullptr()
+    {
+        return obj ? true : false;
     }
 };
 
