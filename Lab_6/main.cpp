@@ -11,15 +11,27 @@ int main()
     AVLTree tree;
 
     cout << endl << "******* BASIC SECTION *******" << endl;
-    for (int i = 0; i < 40; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         tree.insert(i, i);
-        for (AVLTree::Iterator it = tree.begin(); it != tree.end(); ++it)
-        {
-            cout << *(it) << " ";
-        }
-        cout << endl << endl;
     }
+
+    AVLTree tree2(tree);
+    tree2.remove(2);
+    tree2.remove(3);
+
+    AVLTree::Iterator it = tree2.begin();
+    for (AVLTree::Iterator end = tree2.end(); it != end; ++it)
+        cout << *it << endl;
+
+    cout << "----" << endl;
+
+    it = tree.begin();
+    for (AVLTree::Iterator end = tree.end(); it != end; ++it)
+        cout << *it << endl;
+
+    cout << "----" << endl;
+
     /*
         tree.insert(2, 1);
         tree.insert(2, 2);
