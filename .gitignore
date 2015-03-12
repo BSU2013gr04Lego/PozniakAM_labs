@@ -9,7 +9,15 @@ obj/
 *.save
 *user*
 *_old*
+*.xml
+*.mf
+*.properties
+*.txt
+*.jar
 Lab_3/Qt/build*
 ScreenSaver/build*
 Debug/
 Release/
+/Java_Lab_1/BrainFuck/nbproject/private/
+/Java_Lab_1/BrainFuck/dist/
+/Java_Lab_1/BrainFuck/build/

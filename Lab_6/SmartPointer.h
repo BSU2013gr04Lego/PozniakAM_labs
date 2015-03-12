@@ -8,7 +8,6 @@ class SmartPointer
     int* count;
 
 public:
-    // Constructor
     SmartPointer() :
         obj(nullptr),
         count(nullptr)
@@ -22,17 +21,17 @@ public:
         (*count)++;
     }
 
-    SmartPointer(const SmartPointer& spointer) :
-        obj(spointer.obj),
-        count(spointer.count)
+    SmartPointer(const SmartPointer& other) :
+        obj(other.obj),
+        count(other.count)
     {
         (*count)++;
     }
 
-    SmartPointer& operator=(const SmartPointer& spointer)
+    SmartPointer& operator=(const SmartPointer& other)
     {
-        this->obj = spointer.obj;
-        this->count = spointer.count;
+        this->obj = other.obj;
+        this->count = other.count;
         (*count)++;
     }
 
@@ -59,9 +58,9 @@ public:
         return *obj;
     }
 
-    bool operator==(const SmartPointer& spointer) const
+    bool operator==(const SmartPointer& other) const
     {
-        return this->obj == spointer.obj;
+        return this->obj == other.obj;
     }
 
     bool isNullptr()
