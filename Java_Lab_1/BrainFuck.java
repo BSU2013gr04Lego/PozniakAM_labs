@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -22,21 +16,21 @@ class BFI {
     private String program;
 
     private int i;
-    private char[] memory;
+    private byte[] memory;
 
     public BFI(InputStream in, PrintStream out)
     {
         program = "";
 
         i = 0;
-        memory = new char[30000];
+        memory = new byte[30000];
 
         consoleReader = in;
         consoleWriter = out;
 
         consoleWriter.print("Hello, i would fuck you brain!\n"
-                           +"Enter your program now.\n All before '#' symbol will be interpreted as BF program\n"
-                           +"===================\n");
+                +"Enter your program now.\n All before '#' symbol will be interpreted as BF program\n"
+                +"===================\n");
     }
 
     public void readProgram() throws IOException {
@@ -74,11 +68,11 @@ class BFI {
                     ++j;
                     break;
                 case '.':
-                    consoleWriter.print(memory[i]);
+                    consoleWriter.print((char) memory[i]);
                     ++j;
                     break;
                 case ',':
-                    memory[i] = (char) consoleReader.read();
+                    memory[i] = (byte) consoleReader.read();
                     ++j;
                     break;
                 case '[':
@@ -125,15 +119,9 @@ class BFI {
     }
 }
 
-/**
- *
- * @author krucios
- */
-public class BrainFuck {
 
-    /**
-     * @param args the command line arguments
-     */
+public class  BrainFuck {
+
     public static void main(String[] args) throws IOException, BFException {
         BFI BF = new BFI(System.in, System.out);
         BF.readProgram();
