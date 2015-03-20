@@ -20,7 +20,19 @@ public class main {
      */
     public static void main(String[] args) throws VMException, IOException {
         Machine a = new Machine();
-        a.downloadProgram(",+++.+++.+++.+++.+++.+++.");
+        a.downloadProgram(",>,[-<-.>]");
+        /** PROGRAM DESCRIPTION
+         * Input: 2 numbers
+         *        1 (initial) - initial character
+         *        2 (count)   - count of characters to be printed
+         * 
+         * Output: Char sequence, which contain (count) symbols with (initial) 
+         *         as first symbol.
+         * 
+         * Example: 70 10
+         * 
+         * Output: E D C B A @ ? > = <
+         */
         a.execute();
     }
     

@@ -12,6 +12,16 @@ import java_lab_2.VM.*;
  *
  * @author krucios
  */
-public interface Term {
-    public void execute(Machine a) throws VMException, IOException;
+public abstract class Term {
+    private int pos;
+    
+    public Term(int position) {
+        this.pos = position;
+    }
+    
+    public int getPos() {
+        return pos;
+    }
+    
+    public abstract void execute(Machine a) throws VMException, IOException;
 }

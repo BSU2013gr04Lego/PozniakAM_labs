@@ -11,7 +11,11 @@ import java_lab_2.VM.*;
  *
  * @author krucios
  */
-public class TPrint implements Term {
+public class TPrint extends Term {
+    public TPrint(int pos) {
+        super(pos);
+    }
+    
     @Override
     public void execute(Machine a) throws VMException {
         System.out.print((char) a.getCurMem() + " ");

@@ -13,7 +13,11 @@ import java_lab_2.VM.VMException;
  *
  * @author krucios
  */
-public class TInc implements Term {
+public class TInc extends Term {
+    public TInc(int pos) {
+        super(pos);
+    }
+    
     @Override
     public void execute(Machine a) throws VMException {
         a.setCurMem(a.getCurMem() + 1);

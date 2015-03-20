@@ -30,8 +30,8 @@ public class Machine {
     }
     
     public void execute() throws VMException, IOException {
-        for (Term i : this.program) {
-            i.execute(this);
+        for (; I_P < program.size(); I_P++) {
+            program.get(I_P).execute(this);
         }
     }
     
@@ -78,30 +78,36 @@ public class Machine {
         return I_P;
     }
     
+    public ArrayList<Term> getProgram() {
+        return program;
+    }
+    
     public void downloadProgram(String program) throws VMException {
         for(int i = 0; i < program.length(); ++i) {
             switch(program.charAt(i)) {
                 case '>':
-                    this.program.add(new TNext());
+                    this.program.add(new TNext(i));
                     break;
                 case '<':
-                    this.program.add(new TPrev());
+                    this.program.add(new TPrev(i));
                     break;
                 case '+':
-                    this.program.add(new TInc());
+                    this.program.add(new TInc(i));
                     break;
                 case '-':
-                    this.program.add(new TDec());
+                    this.program.add(new TDec(i));
                     break;
                 case '.':
-                    this.program.add(new TPrint());
+                    this.program.add(new TPrint(i));
                     break;
                 case ',':
-                    this.program.add(new TInput());
+                    this.program.add(new TInput(i));
                     break;
                 case '[':
+                    this.program.add(new TStCycle(i));
                     break;
                 case ']':
+                    this.program.add(new TEnCycle(i));
                     break;
                 default:
                     throw new VMException("Unknown symbol " + program.charAt(i));

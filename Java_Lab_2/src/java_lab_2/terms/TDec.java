@@ -12,7 +12,11 @@ import java_lab_2.VM.VMException;
  *
  * @author krucios
  */
-public class TDec implements Term {
+public class TDec extends Term {
+    public TDec(int pos) {
+        super(pos);
+    }
+    
     @Override
     public void execute(Machine a) throws VMException {
         a.setCurMem(a.getCurMem() - 1);

@@ -13,7 +13,11 @@ import java.util.Scanner;
  *
  * @author krucios
  */
-public class TInput implements Term {
+public class TInput extends Term {
+    public TInput(int pos) {
+        super(pos);
+    }
+    
     @Override
     public void execute(Machine a) throws VMException, IOException {
         Scanner scn = new Scanner(System.in);
