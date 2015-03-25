@@ -65,7 +65,7 @@ public:
 
     bool isNullptr()
     {
-        return obj ? true : false;
+        return obj == nullptr;
     }
 };
 
