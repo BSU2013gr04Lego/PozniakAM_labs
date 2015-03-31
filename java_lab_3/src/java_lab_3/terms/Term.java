@@ -9,15 +9,25 @@ import java.io.IOException;
 import java_lab_3.utils.Serializer;
 import java_lab_3.VM.*;
 
+import java_lab_3.TEObject;
+
 /**
  *
  * @author krucios
  */
-public abstract class Term {
+public abstract class Term extends TEObject {
     private int pos;
     
     public Term(int position) {
         this.pos = position;
+    }
+    
+    @Override
+    public boolean isEqual(TEObject obj) {
+        Term that = (Term) obj;
+        if (that == null)
+            return false;
+        return super.isEqual(that) && (this.pos == that.pos);
     }
     
     public int getPos() {

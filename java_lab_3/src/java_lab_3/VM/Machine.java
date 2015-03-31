@@ -11,14 +11,21 @@ import java_lab_3.terms.*;
 import java.util.ArrayList;
 import java_lab_3.utils.Serializer;
 import java.nio.ByteBuffer;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
+import java_lab_3.TEObject;
 
 /**
  *
  * @author krucios
  */
-public class Machine {
+public class Machine extends TEObject {
     public int mem_size = 30000;
     
     private int[] memory;
@@ -33,10 +40,36 @@ public class Machine {
         I_M = 0;
     }
     
+    /********************************************************
+     * 
+     *  Main methods:
+     *  - void execute()
+     *  - void loadFromFile(String file_name)
+     *  - void saveToFile(String file_name)
+     * 
+     ********************************************************/
+    
     public void execute() throws VMException, IOException {
         for (; I_P < program.size(); I_P++) {
             program.get(I_P).execute(this);
+            try {
+                this.saveToFile("auto_save.bfvm");
+            } catch (IOException err) {
+                System.err.println("Can't create auto_save.bfvm");
+            }
         }
+    }
+    
+    public void loadFromFile(String file_name) 
+           throws IOException, VMException {
+        Path path = Paths.get(file_name);
+        this.deserialize(Files.readAllBytes(path));
+    }
+    
+    public void saveToFile(String file_name) throws IOException {
+        Path path = Paths.get(file_name);
+        byte[] serialized_vm = this.serialize(); 
+        Files.write(path, serialized_vm);
     }
     
     // ===== Memory Control
@@ -230,5 +263,34 @@ public class Machine {
         // Load I_P
         this.I_P = (saved[position++] << 24) + (saved[position++] << 16) + 
                    (saved[position++] << 8) + (saved[position++]);
+    }
+    
+    /************************************
+     * LAB 3.3 TRANSITIVE COMPARISON
+     ************************************/
+    @Override
+    public boolean isEqual(TEObject obj) {
+        Machine that = (Machine) obj;
+        if (that == null) {
+            return false;
+        }
+        boolean ans = true;
+        if (this.mem_size != that.mem_size)
+            return false;
+        for (int i = 0; i < this.mem_size; ++i) {
+            if (this.memory[i] != that.memory[i])
+                return false;
+        }
+        if (this.I_M != that.I_M)
+            return false;
+        if (this.program.size() != that.program.size())
+            return false;
+        for (int i = 0; i < this.program.size(); ++i) {
+            if (!TEObject.isEqual(this.program.get(i), that.program.get(i)))
+                return false;
+        }
+        if (this.I_P != that.I_P)
+            return false;
+        return super.isEqual(that);
     }
 }
