@@ -1,0 +1,76 @@
+May 01, 2015 4:49:29 AM java_lab_4.java_lab_4 main
+INFO: File logging started
+May 01, 2015 4:49:29 AM java_lab_4.Main main
+INFO: Creating VM ...
+May 01, 2015 4:49:29 AM java_lab_4.VM.Machine <init>
+INFO: Create Virtual Machine
+May 01, 2015 4:49:31 AM java_lab_4.Main main
+INFO: => New session mode
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine downloadProgram
+INFO: Load new program into VM: ++++++.
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine verifyProgram
+FINE: ++++++. is correct
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 0
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 1
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 2
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 3
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 4
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 5
+May 01, 2015 4:49:34 AM java_lab_4.terms.Term <init>
+FINER: Creating new term on position 6
+May 01, 2015 4:49:34 AM java_lab_4.Main main
+INFO: => Programm successfully dowlanded
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine execute
+INFO: Start execution
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 0
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 1
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 1
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 2
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 2
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 3
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 3
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 4
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 4
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 5
+May 01, 2015 4:49:34 AM java_lab_4.terms.TInc execute
+FINER: **** Increase value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 5
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine setCurMem
+FINE: Set memory[0] = 6
+May 01, 2015 4:49:34 AM java_lab_4.terms.TPrint execute
+FINER: **** Print actual value
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine getCurMem
+FINER: Get memory[0] = 6
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine saveToFile
+INFO: Serialize VM to auto_save.bfvm
+May 01, 2015 4:49:34 AM java_lab_4.VM.Machine serialize
+INFO: Serialize VM ...
+May 01, 2015 4:49:35 AM java_lab_4.Main main
+INFO: Terminating pogram
